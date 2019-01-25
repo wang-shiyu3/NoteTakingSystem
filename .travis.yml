@@ -1,7 +1,4 @@
 language: node_js
 node_js:
   - "10"
-jobs:
-  include:
-    - stage: test
-    - script: echo "0"
+before_install: cd webapp
