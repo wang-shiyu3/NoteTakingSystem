@@ -4,7 +4,7 @@
 
 | Name | NEU ID | Email Address |
 | --- | --- | --- |
-| | | |
+| Mengying Wang | 001357559 | wang.mengyin@husky.neu.edu |
 | | | |
 | | | |
 | | | |
