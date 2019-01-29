@@ -1,8 +1,10 @@
 const Koa = require("koa");
-const app = Koa();
+const router = require("./controllers")
+const bodyParser = require('koa-bodyparser');
 
-app.use(ctx => {
-  ctx.body = 'Hello Koa';
-});
+const app = new Koa();
+app.use(bodyParser());
 
-app.listen(3000);
+app.use(router.routes());
+
+app.listen(3000, ()=>console.log("<-------- Listen on 3000 -------->"));
