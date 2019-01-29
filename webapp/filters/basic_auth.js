@@ -1,3 +1,8 @@
+const user = {
+  username: "k@husky.neu.edu",
+  password: "!Pa1990528"
+};
+
 async function basicAuth(ctx, next) {
   const { request, response } = ctx;
   if (
@@ -15,8 +20,7 @@ async function basicAuth(ctx, next) {
   );
   const [username, password] = credentials.split(":");
 
-  const user = await userService.authenticate({ username, password });
-  if (!user) {
+  if (!(user.username == username && user.password == password)) {
     response.status = 401;
     response.body = { message: "Invalid Authentication Credentials" };
     return;
@@ -24,3 +28,5 @@ async function basicAuth(ctx, next) {
 
   next();
 }
+
+module.exports = basicAuth;
