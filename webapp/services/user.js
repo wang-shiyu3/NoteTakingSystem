@@ -1,4 +1,6 @@
 const passwordValidator = require("password-validator");
+const bcrypt = require("bcrypt");
+
 const schema = new passwordValidator();
 
 const pwdDesc = {
@@ -22,7 +24,7 @@ const isStrongPwd = pwd => {
     .has()
     .lowercase() // Must have lowercase letters
     .has()
-    .digits()   // Must have digits
+    .digits() // Must have digits
     .has()
     .symbols() // Must have symbols
     .has()
@@ -34,11 +36,33 @@ const isStrongPwd = pwd => {
   return schema.validate(pwd + "", { list: true }).map(desc => pwdDesc[desc]);
 };
 
-const isUserExisted = uname => {
+const { users } = require("./../mock");
+const isUserExisted = username => {
+  const flag = users.filter(user => user.username == username);
+  if (flag.length) {
+    return "User is existed";
+  }
   return false;
+};
+
+const encryptPwd = pwd => {
+  const saltRounds = 10;
+  bcrypt.genSalt(saltRounds, function(err, salt) {
+    bcrypt.hash(pwd, salt, function(err, hash) {
+      console.log(hash);
+    });
+  });
+};
+
+const checkPwd = async (pwd, passwordHash) => {
+  const match = await bcrypt.compare(pwd, passwordHash);
+  console.log(match)
+  return match;
 };
 
 module.exports = {
   isStrongPwd,
-  isUserExisted
+  isUserExisted,
+  encryptPwd,
+  checkPwd
 };

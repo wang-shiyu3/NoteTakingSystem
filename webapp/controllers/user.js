@@ -1,16 +1,27 @@
 const Router = require("koa-router");
-const { isStrongPwd } = require("./../services/user");
+const {
+  isStrongPwd,
+  isUserExisted,
+  encryptPwd
+} = require("./../services/user");
 const router = new Router();
 
 router.post("/register", ctx => {
   const { request, response } = ctx;
-  console.log(request.body);
   const { username, password } = request.body;
   const vs = isStrongPwd(password);
   if (vs.length) {
-    ctx.body = vs;
+    ctx.body = { message: vs };
     return;
   }
+  const isUserExistedMsg = isUserExisted(username);
+  if (isUserExistedMsg) {
+    ctx.body = { message: isUserExistedMsg };
+    return;
+  }
+
+  encryptPwd(password);
+
   ctx.body = request.body;
 });
 

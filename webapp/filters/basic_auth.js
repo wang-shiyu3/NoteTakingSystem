@@ -1,7 +1,5 @@
-const user = {
-  username: "k@husky.neu.edu",
-  password: "!Pa1990528"
-};
+const { users } = require("./../mock");
+const { checkPwd } = require("./../services/user");
 
 async function basicAuth(ctx, next) {
   const { request, response } = ctx;
@@ -20,7 +18,12 @@ async function basicAuth(ctx, next) {
   );
   const [username, password] = credentials.split(":");
 
-  if (!(user.username == username && user.password == password)) {
+  const flag = users.filter(
+    async user =>
+      user.username == username && (await checkPwd(password, user.password))
+  );
+  // console.log(flag);
+  if (!flag.length) {
     response.status = 401;
     response.body = { message: "Invalid Authentication Credentials" };
     return;
