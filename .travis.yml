@@ -7,6 +7,6 @@ before_install:
   - chmod 600 ~/.ssh/id_rsa
   - cd webapp
 after_success:
-  - ssh ubuntu@18.223.20.49 "ls"
+  - ssh ubuntu@18.188.55.196 "ls"
 addons:
   ssh_known_hosts: 18.223.20.49
