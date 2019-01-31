@@ -37,15 +37,6 @@ test("POST: Faild - Invalid Password", async t => {
   t.pass();
 });
 
-test("POST: Faild - Invalid Password", async t => {
-  await request(server)
-      .post("/user/register")
-      .send({username: '123@gmail.com', password: '12345'})
-      .expect({ message: [ 'Minimum length 8',
-          'Must have uppercase letters',
-          'Must have lowercase letters',
-          'Must have symbols' ]})
-  t.pass();
 test("POST: Success", async t => {
   await fetch
     .post("/user/register")
@@ -54,6 +45,12 @@ test("POST: Success", async t => {
   await fnDelete();
   t.pass();
 });
+
+test("GET: Success", async t => {
+  const dayjs = require("dayjs");
+  await fetch
+    .post("/user/register")
+    .send({ username: "123@gmail.com", password: "1234Aa56!" });
 
   fetch
     .get("/")
@@ -74,13 +71,5 @@ test("POST: Faild - Duplicate Name", async t => {
     .expect({ message: ["User is existed"] });
 
   await fnDelete();
-  t.pass();
-});
-
-test("POST: Success", async t => {
-  await request(server)
-      .post("/user/register")
-      .send({username: '123@gmail.com', password: '1234Aa56!'})
-      .expect({password: '1234Aa56!', username: '123@gmail.com',})
   t.pass();
 });
