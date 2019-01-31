@@ -24,18 +24,17 @@
 * Test Tools
   * [Supertest](https://www.npmjs.com/package/supertest)
   * [AVA](https://github.com/avajs)
+  * [Travis CI](https://travis-ci.org)
   
 ## Build Instructions
-### Prerequisites
-
-### Installation
 * Clone the git repository from GitHub:
             
-            # For devs over HTTPS:
-            git clone https://github.com/omnip620/csye6225-spring2019.git
+     
+     # For devs over HTTPS:
+     git clone https://github.com/omnip620/csye6225-spring2019.git
            
-            # For devs over SSH:
-            git clone git@github.com:omnip620/csye6225-spring2019.git
+     # For devs over SSH:
+     git clone git@github.com:omnip620/csye6225-spring2019.git
 * Open the working directory:
 ```bash
    cd ./../webapp/
@@ -44,20 +43,19 @@
 ```bash
    npm install
    ```
+* Run
+```bash
+   npm start
+   ```
 ## Deploy Instructions
-
-
+* Do the first three steps in "Build Instructions" first
+```bash
+   npm run deploy
+   ```
 ## Running Tests
-   * Make sure you are under webapp/ first:
-   ```bash
-   cd ./../webapp/
-   ```
-   * Install dev dependencies before running tests:
-   ```bash
-   npm install
-   ```
-   * Run all tests:
-   ```bash
+* Do the first three steps in "Build Instructions" first.
+* Run tests:
+```bash
    npm run test
    ```
 
