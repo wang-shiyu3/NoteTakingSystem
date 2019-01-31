@@ -49,10 +49,6 @@
    ```
 ## Deploy Instructions
 * After unit test success it will be deployed to specified AWS EC2 automatically
-* Do the first three steps in "Build Instructions" first
-```bash
-   npm run deploy
-   ```
 ## Running Tests
 * Do the first three steps in "Build Instructions" first.
 * Run tests:
