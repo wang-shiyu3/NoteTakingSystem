@@ -24,14 +24,6 @@ test("GET: Faild", async t => {
   t.pass();
 });
 
-test("POST: Success", async t => {
-  await request(server)
-      .post("/user/register")
-      .send({username: '123@gmail.com', password: '1234Aa56!'})
-      .expect({password: '1234Aa56!', username: '123@gmail.com',})
-  t.pass();
-});
-
 test("POST: Faild - Invalid Password", async t => {
   await request(server)
       .post("/user/register")
@@ -52,5 +44,13 @@ test("POST: Faild - Duplicate Name", async t => {
       .post('/user/register')
       .send({username: '123@gmail.com', password: '1234Aa56?'})
       .expect({message: ["User is existed"]})
+  t.pass();
+});
+
+test("POST: Success", async t => {
+  await request(server)
+      .post("/user/register")
+      .send({username: '123@gmail.com', password: '1234Aa56!'})
+      .expect({password: '1234Aa56!', username: '123@gmail.com',})
   t.pass();
 });
