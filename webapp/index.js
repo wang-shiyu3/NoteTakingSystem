@@ -7,4 +7,6 @@ app.use(bodyParser());
 
 app.use(router.routes());
 
-app.listen(3000, ()=>console.log("<-------- Listen on 3000 -------->"));
+const server = app.listen(3000, ()=>console.log("<-------- Listen on 3000 -------->"));
+
+module.exports = server;

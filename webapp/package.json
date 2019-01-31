@@ -10,11 +10,16 @@
     "koa": "^2.6.2",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
-    "password-validator": "^4.1.1"
+    "mysql2": "^1.6.4",
+    "password-validator": "^4.1.1",
+    "sequelize": "^4.42.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "ava": "^1.2.0",
+    "supertest": "^3.4.2"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "test": "ava"
   },
   "author": "",
   "license": "ISC"
