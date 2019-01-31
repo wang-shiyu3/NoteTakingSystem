@@ -1,5 +1,4 @@
-const { users } = require("./../mock");
-const { checkPwd } = require("./../services/user");
+const { fetchUser } = require("./../services/user");
 const { sign, verify } = require("./../services/jwt");
 
 async function basicAuth(ctx, next) {
@@ -7,7 +6,6 @@ async function basicAuth(ctx, next) {
 
   const token = ctx.cookies.get("token");
   const decodedToken = verify(token);
-  console.log(decodedToken instanceof Error);
   if (!(decodedToken instanceof Error)) {
     next();
     return;
@@ -28,18 +26,15 @@ async function basicAuth(ctx, next) {
   );
   const [username, password] = credentials.split(":");
 
-  const getUser = users.filter(
-    async user =>
-      user.username == username && (await checkPwd(password, user.password))
-  );
+  const getUser = await fetchUser(password, username);
 
-  if (!getUser.length) {
+  if (!getUser) {
     response.status = 401;
     response.body = { message: "Invalid Authentication Credentials" };
     return;
   }
 
-  ctx.cookies.set("token", sign(getUser[0].id, getUser[0].username));
+  ctx.cookies.set("token", sign(getUser.id, username));
 
   next();
 }

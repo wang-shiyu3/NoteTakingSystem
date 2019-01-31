@@ -1,5 +1,6 @@
 const passwordValidator = require("password-validator");
 const bcrypt = require("bcrypt");
+const User = require("./../model/user");
 
 const schema = new passwordValidator();
 
@@ -33,36 +34,50 @@ const isStrongPwd = pwd => {
     .is()
     .not()
     .oneOf(["Passw0rd", "Password123"]); // Blacklist these values
-  return schema.validate(pwd + "", { list: true }).map(desc => pwdDesc[desc]);
+  const res = schema.validate(pwd + "", { list: true });
+  return res.map(desc => pwdDesc[desc]);
 };
 
-const { users } = require("./../mock");
-const isUserExisted = username => {
-  const flag = users.filter(user => user.username == username);
-  if (flag.length) {
+const isUserExisted = async username => {
+  const user = await User.count({ where: { username } });
+  if (user > 0) {
     return "User is existed";
   }
   return false;
 };
 
-const encryptPwd = pwd => {
+const encryptPwd = async pwd => {
   const saltRounds = 10;
-  bcrypt.genSalt(saltRounds, function(err, salt) {
-    bcrypt.hash(pwd, salt, function(err, hash) {
-      console.log(hash);
-    });
-  });
+  try {
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hash = await bcrypt.hash(pwd, salt);
+    return hash;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-const checkPwd = async (pwd, passwordHash) => {
-  const match = await bcrypt.compare(pwd, passwordHash);
-  console.log(match)
-  return match;
+const fetchUser = async (password, username) => {
+  try {
+    const user = await User.findOne({ where: { username } });
+    if (!user) {
+      return false;
+    }
+    const match = await bcrypt.compare(password, user.toJSON().password);
+
+    if (!match) {
+      return false;
+    }
+
+    return { id: user.id };
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 module.exports = {
   isStrongPwd,
   isUserExisted,
   encryptPwd,
-  checkPwd
+  fetchUser
 };
