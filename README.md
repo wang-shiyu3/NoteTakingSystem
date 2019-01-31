@@ -52,7 +52,6 @@
 ```bash
    npm run deploy
    ```
-
 ## Running Tests
 * Do the first three steps in "Build Instructions" first.
 * Run tests:
