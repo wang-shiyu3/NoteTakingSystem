@@ -7,3 +7,5 @@ before_install:
   - cd webapp
 after_success:
   - ssh ubuntu@18.223.20.49 "sh ./script.sh"
+addons:
+  ssh_known_hosts: 18.223.20.49
