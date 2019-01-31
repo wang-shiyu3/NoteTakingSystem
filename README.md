@@ -19,7 +19,18 @@
 
 
 ## Running Tests
-
+   * Make sure you are under webapp/ first:
+   ```bash
+   cd ./../webapp/
+   ```
+   * Install dev dependencies before running tests:
+   ```bash
+   npm install
+   ```
+   * Run all tests:
+   ```bash
+   npm run test
+   ```
 
 ## CI/CD
 
