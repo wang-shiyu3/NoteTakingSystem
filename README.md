@@ -13,7 +13,7 @@
 * Operating System
   * [Ubuntu 18.04](http://releases.ubuntu.com/bionic/)
 * Programming Language
-  * [Node.js](https://nodejs.org/en/) 
+  * [Node.js](https://nodejs.org/en/)
 * Develop Tools
   * [WebStorm](https://www.jetbrains.com/webstorm/)
   * [Git](https://git-scm.com)
@@ -25,14 +25,14 @@
   * [Supertest](https://www.npmjs.com/package/supertest)
   * [AVA](https://github.com/avajs)
   * [Travis CI](https://travis-ci.org)
-  
+
 ## Build Instructions
 * Clone the git repository from GitHub:
-            
-     
+
+
      # For devs over HTTPS:
      git clone https://github.com/omnip620/csye6225-spring2019.git
-           
+
      # For devs over SSH:
      git clone git@github.com:omnip620/csye6225-spring2019.git
 * Open the working directory:
@@ -48,6 +48,7 @@
    npm start
    ```
 ## Deploy Instructions
+* After unit test success it will be deployed to specified AWS EC2 automatically
 * Do the first three steps in "Build Instructions" first
 ```bash
    npm run deploy
@@ -60,5 +61,7 @@
    ```
 
 ## CI/CD
+- Using travis as Continuous Integration
+- Using travis as Continuous Delivery
 
 
