@@ -9,4 +9,4 @@ before_install:
 after_success:
   - ssh ubuntu@18.188.55.196 "ls"
 addons:
-  ssh_known_hosts: 18.223.20.49
+  ssh_known_hosts: 18.188.55.196
