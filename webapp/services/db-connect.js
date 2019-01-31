@@ -3,11 +3,11 @@ var Sequelize = require("sequelize");
 
 //Setting up the config
 var sequelize = new Sequelize(
-  "your-database-name",
-  "db-username",
-  "db-password",
+  "",
+  "admin",
+  "xxxxxx",
   {
-    host: "ec2-18-225-5-181.us-east-2.compute.amazonaws.com",
+    host: "3.17.36.232",
     port: 3306,
     dialect: "mysql"
   }
