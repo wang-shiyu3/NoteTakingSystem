@@ -3,7 +3,7 @@ node_js:
   - "10"
 before_install:
   - openssl aes-256-cbc -K $encrypted_77d37c177148_key -iv $encrypted_77d37c177148_iv
-    -in id_rsa.enc -out ~\/.ssh/id_rsa -d
+    -in id_rsa.enc -out ~/.ssh/id_rsa -d
   - cd webapp
 after_success:
   - ssh ubuntu@18.223.20.49 "sh ./script.sh"
