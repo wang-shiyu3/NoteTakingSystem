@@ -10,8 +10,20 @@
 | | | |
 
 ## Technology Stack
-
-
+* Operating System
+  * [Ubuntu 18.04](http://releases.ubuntu.com/bionic/)
+* Programming Language
+  * [Node.js](https://nodejs.org/en/) 
+* Develop Tools
+  * [WebStorm](https://www.jetbrains.com/webstorm/)
+* Relational Database
+  * [MySQL](https://www.mysql.com)
+* Object Storage
+  * [AWS](https://aws.amazon.com)
+* Test Tools
+  * [Supertest](https://www.npmjs.com/package/supertest)
+  * [ava](https://github.com/avajs)
+  
 ## Build Instructions
 
 
