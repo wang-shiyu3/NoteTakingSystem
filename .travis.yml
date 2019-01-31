@@ -6,6 +6,6 @@ before_install:
     -in id_rsa.enc -out ~/.ssh/id_rsa -d
   - cd webapp
 after_success:
-  - ssh ubuntu@18.223.20.49 "sh ./script.sh"
+  - ssh ubuntu@18.223.20.49 "ls"
 addons:
   ssh_known_hosts: 18.223.20.49
