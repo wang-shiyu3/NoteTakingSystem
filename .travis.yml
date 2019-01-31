@@ -2,10 +2,9 @@ language: node_js
 node_js:
   - "10"
 before_install:
-  - cd webapp
   - openssl aes-256-cbc -K $encrypted_77d37c177148_key -iv $encrypted_77d37c177148_iv
     -in id_rsa.enc -out ~\/.ssh/id_rsa -d
   - chmod 600 ~/.ssh/id_rsa
-
+  - cd webapp
 after_success:
   - ssh ubuntu@18.223.20.49 "sh ./script.sh"
