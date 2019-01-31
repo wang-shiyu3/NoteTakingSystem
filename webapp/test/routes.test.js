@@ -6,6 +6,6 @@ test.afterEach(() => {
 });
 test("routes: index", async t => {
   const response = await request(server).get("/");
-  t.is(response.status, 200);
+  t.is(response.status, 401);
   t.is(response.type, "application/json");
 });
