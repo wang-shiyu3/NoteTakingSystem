@@ -1,6 +1,7 @@
 const Router = require("koa-router");
 const User = require("./../model/user");
 const {
+  isEmail,
   isStrongPwd,
   isUserExisted,
   encryptPwd
@@ -10,6 +11,13 @@ const router = new Router();
 router.post("/register", async ctx => {
   const { request, response } = ctx;
   const { username, password } = request.body;
+
+  const checkIsMail = isEmail(username);
+  if (!checkIsMail) {
+    ctx.body = { message: "Username must be an email" };
+    return;
+  }
+
   const vs = isStrongPwd(password);
   if (vs.length) {
     ctx.body = { message: vs };
