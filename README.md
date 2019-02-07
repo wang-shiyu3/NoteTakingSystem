@@ -7,7 +7,6 @@
 | Mengying Wang | 001357559 | wang.mengyin@husky.neu.edu |
 | Shiyu Wang | 001400142 | wang.shiyu3@husky.neu.edu |
 | Zhichao Pan | 001493794 | pan.z@husky.neu.edu |
-| | | |
 
 ## Technology Stack
 * Operating System
@@ -30,11 +29,11 @@
 * Clone the git repository from GitHub:
 
 
-     # For devs over HTTPS:
-     git clone https://github.com/omnip620/csye6225-spring2019.git
+      # For devs over HTTPS:
+      git clone https://github.com/omnip620/csye6225-spring2019.git
 
-     # For devs over SSH:
-     git clone git@github.com:omnip620/csye6225-spring2019.git
+      # For devs over SSH:
+      git clone git@github.com:omnip620/csye6225-spring2019.git
 * Open the working directory:
 ```bash
    cd ./../webapp/
