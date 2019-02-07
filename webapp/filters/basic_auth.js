@@ -4,12 +4,12 @@ const { sign, verify } = require("./../services/jwt");
 async function basicAuth(ctx, next) {
   const { request, response } = ctx;
 
-  const token = ctx.cookies.get("token");
-  const decodedToken = verify(token);
-  if (!(decodedToken instanceof Error)) {
-    next();
-    return;
-  }
+  // const token = ctx.cookies.get("token");
+  // const decodedToken = verify(token);
+  // if (!(decodedToken instanceof Error)) {
+  //   next();
+  //   return;
+  // }
 
   if (
     !request.headers.authorization ||
