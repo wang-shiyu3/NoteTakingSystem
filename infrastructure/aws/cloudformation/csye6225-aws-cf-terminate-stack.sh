@@ -1,3 +1,3 @@
 #!/bin/bash
 
-aws cloudformation delete-stack --stack-name csye6225-vpc
+aws cloudformation delete-stack --stack-name test
