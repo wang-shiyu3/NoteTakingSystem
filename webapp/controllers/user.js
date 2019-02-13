@@ -9,7 +9,7 @@ const {
 const router = new Router();
 
 router.post("/register", async ctx => {
-  const { request, response } = ctx;
+  const { request } = ctx;
   const { username, password } = request.body;
 
   const checkIsMail = isEmail(username);

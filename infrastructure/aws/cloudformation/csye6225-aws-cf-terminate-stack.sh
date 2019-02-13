@@ -1,3 +1,3 @@
 #!/bin/bash
 
-aws cloudformation delete-stack --stack-name test
+aws cloudformation delete-stack --stack-name test1
