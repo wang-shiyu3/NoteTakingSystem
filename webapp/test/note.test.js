@@ -8,9 +8,8 @@ test.before(() => {
   fetch = request(server);
 });
 
-test("Without Authorization", async t => {
-  const note = await Note.find({ where: { uid: 1, id: 6 } })
-  const res = await fetch
+test("Withoutg Authorization", async t => {
+  await fetch
       .get("/note/6")
       .expect({message:"Missing Authorization Header"});
   t.pass();
