@@ -35,8 +35,9 @@ async function basicAuth(ctx, next) {
   }
 
   ctx.cookies.set("token", sign(getUser.id, username));
+  request.uid = getUser.id;
 
-  next();
+  await next();
 }
 
 module.exports = basicAuth;
