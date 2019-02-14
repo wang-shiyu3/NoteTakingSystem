@@ -15,17 +15,20 @@ router.post("/register", async ctx => {
   const checkIsMail = isEmail(username);
   if (!checkIsMail) {
     ctx.body = { message: "Username must be an email" };
+    ctx.status = 400;
     return;
   }
 
   const vs = isStrongPwd(password);
   if (vs.length) {
     ctx.body = { message: vs };
+    ctx.status = 400;
     return;
   }
   const isUserExistedMsg = await isUserExisted(username);
   if (isUserExistedMsg) {
     ctx.body = { message: isUserExistedMsg };
+    ctx.status = 409;
     return;
   }
 
