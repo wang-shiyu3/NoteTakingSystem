@@ -22,7 +22,7 @@ test("GET: Faild", async t => {
 });
 
 test("POST: Faild - Invalid Password", async t => {
-  const message = await fetch
+  await fetch
     .post("/user/register")
     .send({ username: "123@gmail.com", password: "12345" })
     .expect({
@@ -69,7 +69,6 @@ test("POST: Faild - Duplicate Name", async t => {
     .post("/user/register")
     .send({ username: "123@gmail.com", password: "1234Aa56?" })
     .expect({ message: ["User is existed"] });
-
   await fnDelete();
   t.pass();
 });
