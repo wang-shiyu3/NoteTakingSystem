@@ -1,3 +1,5 @@
 #!/bin/bash
 
-aws cloudformation delete-stack --stack-name test1
+echo "Enter your stack name [ENTER]: "
+read stack
+aws cloudformation delete-stack --stack-name ${stack}
