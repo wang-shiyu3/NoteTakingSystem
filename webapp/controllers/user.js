@@ -9,7 +9,7 @@ const {
 const router = new Router();
 
 router.post("/register", async ctx => {
-  const { request, response } = ctx;
+  const { request } = ctx;
   const { username, password } = request.body;
 
   const checkIsMail = isEmail(username);
@@ -32,11 +32,13 @@ router.post("/register", async ctx => {
   try {
     const hash = await encryptPwd(password);
     const user = await User.create({ username, password: hash });
+    const {username, id} = user.toJSON();
+    ctx.body = {username, id};
   } catch (err) {
     console.log(err);
   }
 
-  ctx.body = request.body;
+
 });
 
 module.exports = router;
