@@ -32,7 +32,10 @@ router.get("/:id", async ctx => {
 // Create new one
 router.post("/", async ctx => {
   const {
-    request: { content, uid }
+    request: {
+      body: { content },
+      uid
+    }
   } = ctx;
   try {
     const note = await Note.create({ uid, content });
