@@ -1,3 +1,5 @@
 #!/bin/bash
 
-aws cloudformation create-stack --stack-name test1 --template-body file://csye6225-cf-networking.yaml
+echo "Enter your stack name [ENTER]: "
+read stack
+aws cloudformation create-stack --stack-name ${stack} --template-body file://csye6225-cf-networking.yaml

@@ -12,7 +12,7 @@ Resources:
       InstanceTenancy: default
       Tags:
       - Key: Name
-        Value: test-csye6225-vpc
+        Value: ${stack}
   InternetGateway:
     Type: AWS::EC2::InternetGateway
   VPCGatewayAttachment:
@@ -44,7 +44,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
       - Key: Name
-        Value: test-csye6225-rt
+        Value: ${stack}
   InternetRoute:
     Type: AWS::EC2::Route
     DependsOn: VPCGatewayAttachment
