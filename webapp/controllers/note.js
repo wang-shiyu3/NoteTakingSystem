@@ -39,7 +39,6 @@ router.post("/", async ctx => {
   } = ctx;
   try {
     const note = await Note.create({ uid, content });
-    console.log(uid);
     ctx.body = { id: note.toJSON().id };
   } catch (err) {
     console.log(err);

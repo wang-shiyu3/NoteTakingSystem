@@ -3,12 +3,13 @@ const sequelize = require("./../services/db-connect");
 
 const Note = sequelize.define("note", {
   id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV4,
+    primaryKey: true
   },
   uid: Sequelize.INTEGER,
-  content: Sequelize.STRING
+  content: Sequelize.STRING,
+  title: Sequelize.STRING,
 });
 
 module.exports = Note;
