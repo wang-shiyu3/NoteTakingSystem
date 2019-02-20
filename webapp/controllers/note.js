@@ -17,10 +17,9 @@ router.get("/all", async ctx => {
 // Get one note
 router.get("/:id", async ctx => {
   const {
-    request,
+    request: { uid },
     params: { id }
   } = ctx;
-  const uid = request.uid;
   try {
     const note = await Note.find({ where: { uid, id } });
     ctx.body = note.toJSON();
@@ -77,4 +76,5 @@ router.delete("/:id", async ctx => {
     console.log(err);
   }
 });
+
 module.exports = router;
