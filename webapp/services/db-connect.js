@@ -20,7 +20,7 @@ const sequelize = new Sequelize("csye6225", "admin", "xxxxxx", {
 //       //   console.log(JSON.stringify(rows));
 //       // });
 
-//       sequelize.query("select * from users").then(function(rows) {
+//       sequelize.query("select * from user").then(function(rows) {
 //         console.log(JSON.stringify(rows));
 //       });
 //       console.log("Connection has been established successfully");

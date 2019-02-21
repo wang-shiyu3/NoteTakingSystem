@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "aws-sdk": "^2.407.0",
     "bcrypt": "^3.0.3",
     "dayjs": "^1.8.0",
     "jsonwebtoken": "^8.4.0",

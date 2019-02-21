@@ -15,3 +15,5 @@ const HPTATN = async (ctx, next) => {
   }
   await next();
 };
+
+module.exports = { HPTATN };

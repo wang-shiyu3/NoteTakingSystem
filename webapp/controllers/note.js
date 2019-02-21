@@ -32,13 +32,15 @@ router.get("/:id", async ctx => {
 router.post("/", async ctx => {
   const {
     request: {
-      body: { content },
+      body: { content, title },
       uid
     }
   } = ctx;
   try {
-    const note = await Note.create({ uid, content });
-    ctx.body = { id: note.toJSON().id };
+    const note = await Note.create({ uid, content, title });
+    ctx.status = 201;
+    const { uid: noo, ...ret } = note.toJSON();
+    ctx.body = ret;
   } catch (err) {
     console.log(err);
   }

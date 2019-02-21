@@ -11,4 +11,5 @@ const Attachment = sequelize.define("attachment", {
   url: Sequelize.STRING
 });
 
+
 module.exports = Attachment;
