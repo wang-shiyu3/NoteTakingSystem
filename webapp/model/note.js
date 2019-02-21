@@ -7,9 +7,9 @@ const Note = sequelize.define("note", {
     defaultValue: Sequelize.UUIDV4,
     primaryKey: true
   },
-  uid: Sequelize.INTEGER,
-  content: Sequelize.STRING,
+  uid: Sequelize.UUID,
   title: Sequelize.STRING,
+  content: Sequelize.STRING
 });
 
 module.exports = Note;

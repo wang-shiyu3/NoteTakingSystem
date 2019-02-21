@@ -35,12 +35,10 @@ router.post("/register", async ctx => {
   try {
     const hash = await encryptPwd(password);
     const user = await User.create({ username, password: hash });
-    ctx.body = {'id': user.toJSON().id, 'username': user.toJSON().username};
+    ctx.body = { message: "User was created successfully" };
   } catch (err) {
     console.log(err);
   }
-
-
 });
 
 module.exports = router;
