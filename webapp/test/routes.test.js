@@ -8,10 +8,6 @@ test.before(() => {
   fetch = request(server);
 });
 
-// test.afterEach(async () => {
-//   await server.close();
-// });
-
 const fnDelete = async () => {
   await sequelize.query("delete from users where username='123@gmail.com'");
 };
