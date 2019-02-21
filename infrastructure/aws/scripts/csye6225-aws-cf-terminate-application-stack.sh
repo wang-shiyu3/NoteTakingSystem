@@ -11,6 +11,9 @@ do
 done &
 trap "kill $!" EXIT
 aws cloudformation wait stack-delete-complete --stack-name ${stack}
-echo '\n'
+if [ $? -eq 0 ];then
+  echo "Stack ${stack} was deleted successfully!"
+else
+  echo "Stack ${stack} deleted failed!"
+fi
 kill $! && trap " " EXIT
-echo "Stack ${stack} was deleted successfully!"
