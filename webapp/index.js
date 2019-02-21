@@ -1,7 +1,8 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const Koa = require("koa");
-const router = require("./controllers")
 const bodyParser = require('koa-bodyparser');
-
+const router = require("./controllers")
 const app = new Koa();
 app.use(bodyParser());
 

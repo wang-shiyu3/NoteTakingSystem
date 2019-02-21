@@ -1,9 +1,14 @@
 const fs = require("fs");
 const AWS = require("aws-sdk");
+const {
+  AWS_ACCESS_KEY,
+  AWS_SECRET_ACCESS_KEY,
+  AWS_BUCKET
+} = require("../configs/config");
 
 const s3 = new AWS.S3({
-  accessKeyId: "AKIAJUMD3J4VVSEVUKLQ", //"process.env.AWS_ACCESS_KEY",
-  secretAccessKey: "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" //process.env.AWS_SECRET_ACCESS_KEY
+  accessKeyId: AWS_ACCESS_KEY, //"process.env.AWS_ACCESS_KEY",
+  secretAccessKey: AWS_SECRET_ACCESS_KEY //process.env.AWS_SECRET_ACCESS_KEY
 });
 
 const upload = file => {
@@ -17,7 +22,7 @@ const upload = file => {
     fs.readFile(file.path, (err, data) => {
       if (err) return reject(err);
       const params = {
-        Bucket: "csye6225-spring2019-panz", // pass your bucket name
+        Bucket: AWS_BUCKET, // pass your bucket name
         Key,
         Body: data,
         contentType: file.mimetype
