@@ -93,3 +93,42 @@ Resources:
       SecurityGroupEgress:
       - IpProtocol: -1
         CidrIp: 0.0.0.0/0
+  Ec2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ${ImageId}
+      InstanceType: t2.micro
+      Volumes: 
+        - Device: "/dev/sda1"
+        - VolumeId: !Ref Volume
+      SecurityGroupIds:
+        - !Ref: SecurityGroup
+  Volume:
+    Type: AWS::EC2::Volume
+    Properties:
+      Size: 20
+      VolumeType: gp2
+  MyDB:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceClass: db.t2.medium
+      Engine: MySQL/Postgres/Aurora
+      DBInstanceIdentifier: csye6225-spring2019
+      MultiAZ: "No"
+      MasterUsername: csye6225master
+      MasterPassword: csye6225password
+      DBSubnetGroupName: !Ref myDBSubnetGroup
+      PubliclyAccessible: "Yes"
+      DBName: csye6225
+  myDBSubnetGroup: 
+    Type: "AWS::RDS::DBSubnetGroup"
+    Properties: 
+      DBSubnetGroupDescription: "DBSubnets"
+      SubnetIds: 
+        - !Ref SubnetA
+        - !Ref SubnetB
+        - !Ref SubnetC
+  
+    
+
+    
