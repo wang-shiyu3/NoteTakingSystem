@@ -26,18 +26,21 @@ Resources:
       VpcId: !Ref VPC
       CidrBlock: 172.31.0.0/20
       MapPublicIpOnLaunch: true
+      AvailabilityZone: us-east-2a
   SubnetB:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
       CidrBlock: 172.31.16.0/20
       MapPublicIpOnLaunch: true
+      AvailabilityZone: us-east-2b
   SubnetC:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
       CidrBlock: 172.31.32.0/20
       MapPublicIpOnLaunch: true
+      AvailabilityZone: us-east-2c
   RouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -86,40 +89,46 @@ Resources:
         FromPort: '443'
         ToPort: '443'
         CidrIp: 0.0.0.0/0
-      - IpProtocol: tcp
-        FromPort: '3306'
-        ToPort: '3306'
-        CidrIp: !Ref SecurityGroup
       SecurityGroupEgress:
       - IpProtocol: -1
         CidrIp: 0.0.0.0/0
+  DBSecurityGroup:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      IpProtocol: tcp
+      FromPort: '3306'
+      ToPort: '3306'
+      CidrIp: 0.0.0.0/0
+      GroupId: !Ref SecurityGroup
   Ec2Instance:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: ${ImageId}
       InstanceType: t2.micro
       Volumes: 
-        - Device: "/dev/sda1"
-        - VolumeId: !Ref Volume
-      SecurityGroupIds:
-        - !Ref: SecurityGroup
+        - Device: "/dev/sdh"
+          VolumeId: !Ref Volume
+      SubnetId: !Ref SubnetB
+      AvailabilityZone: us-east-2b
   Volume:
     Type: AWS::EC2::Volume
     Properties:
       Size: 20
       VolumeType: gp2
+      AvailabilityZone: us-east-2b
   MyDB:
     Type: AWS::RDS::DBInstance
     Properties:
       DBInstanceClass: db.t2.medium
-      Engine: MySQL/Postgres/Aurora
+      Engine: MySQL
       DBInstanceIdentifier: csye6225-spring2019
-      MultiAZ: "No"
-      MasterUsername: csye6225master
-      MasterPassword: csye6225password
+      MultiAZ: false
+      MasterUsername: "csye6225master"
+      MasterUserPassword: "csye6225password"
       DBSubnetGroupName: !Ref myDBSubnetGroup
-      PubliclyAccessible: "Yes"
-      DBName: csye6225
+      PubliclyAccessible: true
+      DBName: "csye6225"
+      AllocatedStorage: "100"
   myDBSubnetGroup: 
     Type: "AWS::RDS::DBSubnetGroup"
     Properties: 
@@ -128,6 +137,13 @@ Resources:
         - !Ref SubnetA
         - !Ref SubnetB
         - !Ref SubnetC
+  DyDB:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "id"
+          AttributeType: "string"
+  
   
     
 

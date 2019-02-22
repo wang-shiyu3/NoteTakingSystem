@@ -2,6 +2,10 @@
 
 echo "Enter your stack name [ENTER]: "
 read stack
+# echo "Enter your ami id [ENTER]: "
+# read ImageId
+# ImageId=ami-0d2709b2db7a71faa
+
 aws cloudformation create-stack --stack-name ${stack} --template-body file://../cloudformation/csye6225-cf-application.yaml
 i=1
 sp="/-\|"
