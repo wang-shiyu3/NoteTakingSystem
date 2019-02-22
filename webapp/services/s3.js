@@ -38,7 +38,7 @@ const upload = file => {
 const remove = key => {
   return new Promise((resolve, reject) => {
     var params = {
-      Bucket: "csye6225-spring2019-panz", // TODO: hardcode
+      Bucket: AWS_BUCKET,
       Key: key
     };
     s3.deleteObject(params, function(err, data) {
