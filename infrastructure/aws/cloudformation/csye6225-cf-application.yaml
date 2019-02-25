@@ -29,21 +29,21 @@ Resources:
       VpcId: !Ref VPC
       CidrBlock: 172.31.0.0/20
       MapPublicIpOnLaunch: true
-      AvailabilityZone: us-east-2a
+      AvailabilityZone: us-east-1a
   SubnetB:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
       CidrBlock: 172.31.16.0/20
       MapPublicIpOnLaunch: true
-      AvailabilityZone: us-east-2b
+      AvailabilityZone: us-east-1b
   SubnetC:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
       CidrBlock: 172.31.32.0/20
       MapPublicIpOnLaunch: true
-      AvailabilityZone: us-east-2c
+      AvailabilityZone: us-east-1c
   RouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -112,13 +112,13 @@ Resources:
         - Device: "/dev/sdh"
           VolumeId: !Ref Volume
       SubnetId: !Ref SubnetB
-      AvailabilityZone: us-east-2b
+      AvailabilityZone: us-east-1b
   Volume:
     Type: AWS::EC2::Volume
     Properties:
       Size: 20
       VolumeType: gp2
-      AvailabilityZone: us-east-2b
+      AvailabilityZone: us-east-1b
   MyDB:
     Type: AWS::RDS::DBInstance
     Properties:
