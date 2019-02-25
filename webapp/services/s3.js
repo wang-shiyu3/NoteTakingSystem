@@ -28,7 +28,7 @@ const upload = file => {
         contentType: file.mimetype
       };
       s3.upload(params, function(s3Err, data) {
-        if (s3Err) return reject(err);
+        if (s3Err) return reject(s3Err);
         resolve(data.Location);
       });
     });
