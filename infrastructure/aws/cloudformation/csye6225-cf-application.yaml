@@ -115,6 +115,7 @@ Resources:
     Properties:
       ImageId: !Ref image
       InstanceType: t2.micro
+      KeyName: csye6225
       Volumes: 
         - Device: "/dev/sdh"
           VolumeId: !Ref Volume
