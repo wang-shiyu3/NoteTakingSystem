@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Creat CodeDeploy Applicaton
+
+Parameters:
+
+Resources:
+  CodeDeployApplication:
+    Type: AWS::CodeDeploy::Application
+    Properties:
+      ApplicationName: csye6225-webapp
+      ComputePlatform: EC2/On-premises
+
+  DeploymentGroup:
+    Type: AWS::CodeDeploy::DeploymentGroup
+    Properties:
+        ApplicationName: !Ref CodeDeployApplication
+        AutoRollbackConfiguration:
+          AutoRollbackConfiguration
+        AutoScalingGroups:
+          - 字符串
+        Deployment:
+          Deployment
+        DeploymentConfigName: String
+        DeploymentGroupName: csye6225-webapp-deployment
+        DeploymentStyle: In-place
+        Ec2TagFilters:
+          - Ec2TagFilters
+        Ec2TagSet: Ec2TagSet
+        LoadBalancerInfo:
+          LoadBalancerInfo
+        OnPremisesInstanceTagFilters:
+          - OnPremisesInstanceTagFilters
+        OnPremisesInstanceTagSet: OnPremisesInstanceTagSet
+        ServiceRoleArn: String
+        TriggerConfigurations:
+          - TriggerConfig
