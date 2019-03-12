@@ -269,6 +269,20 @@ Resources:
               - arn:aws:codedeploy:AWS_REGION:AWS_ACCOUNT_ID:deploymentconfig:CodeDeployDefault.OneAtATime
               - arn:aws:codedeploy:AWS_REGION:AWS_ACCOUNT_ID:deploymentconfig:CodeDeployDefault.HalfAtATime
               - arn:aws:codedeploy:AWS_REGION:AWS_ACCOUNT_ID:deploymentconfig:CodeDeployDefault.AllAtOnce
+  RootRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - ec2.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+  
 
   
     
