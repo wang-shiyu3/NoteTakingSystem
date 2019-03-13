@@ -2,6 +2,7 @@
 
 echo "Enter your stack name [ENTER]: "
 read stack
+stack = $1
 aws cloudformation create-stack --stack-name ${stack} --template-body file://../cloudformation/csye6225-cf-networking.yaml
 i=1
 sp="/-\|"
