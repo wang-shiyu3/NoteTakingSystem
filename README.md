@@ -56,7 +56,6 @@ npm run test
    ```
 
 ## CI/CD
-- Using travis as Continuous Integration
-- Using travis as Continuous Delivery
+CircleCI
 
 
