@@ -4,9 +4,12 @@ echo "Enter your stack name [ENTER]: "
 read stack
 echo "Enter your ami id [ENTER]: "
 read ImageId
-# ami-0d2709b2db7a71faa
+echo "Enter your network stack name [ENTER]: "
+read ExportStackName
+# ami-0d2709b2db7a71faa  wangshiyu
 
-aws cloudformation create-stack --stack-name ${stack} --template-body file://../cloudformation/csye6225-cf-application.yaml  --parameters ParameterKey=image,ParameterValue=${ImageId}
+
+aws cloudformation create-stack --stack-name ${stack} --template-body file://../cloudformation/csye6225-cf-application.yaml  --parameters ParameterKey=image,ParameterValue=${ImageId}  ParameterKey=ExportStackName,ParameterValue=${ExportStackName}
 i=1
 sp="/-\|"
 while true
