@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 #Create CI-CD Stack
 echo "Enter CICD Stack Name:"
