@@ -157,3 +157,10 @@ Resources:
       ManagedPolicyArns:
        - arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole 
       Path: "/"
+  Ec2InstanceProfile:
+    Type: "AWS::IAM::InstanceProfile"
+    Properties:
+      InstanceProfileName: "EC2profile"
+      Path: "/"
+      Roles:
+        - !Ref CodeDeployEC2ServiceRole

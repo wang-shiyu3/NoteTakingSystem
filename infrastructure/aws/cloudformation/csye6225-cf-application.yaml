@@ -33,6 +33,7 @@ Resources:
       Volumes: 
         - Device: "/dev/sdh"
           VolumeId: !Ref Volume
+      IamInstanceProfile: "EC2profile"
       KeyName: csye6225
       SubnetId: 
           Fn::ImportValue: !Sub '${ExportStackName}-SubnetB'
