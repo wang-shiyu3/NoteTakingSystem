@@ -1,5 +1,7 @@
+---
+Description: >-
+  CI/CD stack.
 AWSTemplateFormatVersion: 2010-09-09
-Description: CloudFormation Template
 
 Parameters:
   RESOURCE1:
