@@ -91,7 +91,10 @@ Resources:
             Action:
               - 
                 's3:PutObject'
-            Resource: !Ref ARN
+            Resource: !Join
+              - ''
+              - - !Ref ARN
+                - '/*' 
       Users:
         - 
           "circleci"

@@ -6,7 +6,6 @@ echo "Enter your ami id [ENTER]: "
 read ImageId
 echo "Enter your network stack name [ENTER]: "
 read ExportStackName
-# ami-0d2709b2db7a71faa  wangshiyu
 
 
 aws cloudformation create-stack --stack-name ${stack} --template-body file://../cloudformation/csye6225-cf-application.yaml  --parameters ParameterKey=image,ParameterValue=${ImageId}  ParameterKey=ExportStackName,ParameterValue=${ExportStackName}
