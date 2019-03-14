@@ -10,6 +10,8 @@ Parameters:
     Type: "String"
   RESOURCE4:
     Type: "String"
+  ARN:    
+    Type: "String"
 
 Resources:
   IAMPolicy:
@@ -70,11 +72,13 @@ Resources:
               - 's3:Get*'
               - 's3:List*'
             Effect: Allow
-            Resource: '*'
+            Resource: !Ref ARN
       Roles:
         - !Ref CodeDeployEC2ServiceRole
         - !Ref CodeDeployServiceRole
-    
+      Users:
+        - 
+          "circleci"
   CircleCIUploadPolicies:
     Type: AWS::IAM::ManagedPolicy
     Properties: 
@@ -87,7 +91,7 @@ Resources:
             Action:
               - 
                 's3:PutObject'
-            Resource: '*'
+            Resource: !Ref ARN
       Users:
         - 
           "circleci"
@@ -148,36 +152,3 @@ Resources:
       ManagedPolicyArns:
        - arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole 
       Path: "/"
-      
-  # CodeDeployApplication:
-  #   Type: AWS::CodeDeploy::Application
-  #   Properties:
-  #     ApplicationName: csye6225-webapp
-  #     ComputePlatform: EC2/On-premises
-
-  # DeploymentGroup:
-  #   Type: AWS::CodeDeploy::DeploymentGroup
-  #   Properties:
-  #       ApplicationName: !Ref CodeDeployApplication
-  #       AutoRollbackConfiguration:
-  #         AutoRollbackConfiguration
-  #       AutoScalingGroups:
-  #         - 字符串
-  #       Deployment:
-  #         Deployment
-  #       DeploymentConfigName: String
-  #       DeploymentGroupName: csye6225-webapp-deployment
-  #       DeploymentStyle: In-place
-  #       Ec2TagFilters:
-  #         - Ec2TagFilters
-  #       Ec2TagSet: Ec2TagSet
-  #       LoadBalancerInfo:
-  #         LoadBalancerInfo
-  #       OnPremisesInstanceTagFilters:
-  #         - OnPremisesInstanceTagFilters
-  #       OnPremisesInstanceTagSet: OnPremisesInstanceTagSet
-  #       ServiceRoleArn: String
-  #       TriggerConfigurations:
-  #         - TriggerConfig
-
-
