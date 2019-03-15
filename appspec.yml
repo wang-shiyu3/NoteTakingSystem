@@ -3,14 +3,18 @@ os: linux
 
 files:
   - source: /
-    destination: /home/centos/webapp
+    destination: /home/centos/www
 
 hooks:
+  BeforeInstall:
+    - location: before-install.sh
+      timeout: 300
+      runas: centos
   AfterInstall:
-    - location: /after-install.sh
-      timeout: 180
+    - location: after-install.sh
+      timeout: 300
       runas: centos
   ApplicationStart:
-    - location: npm-start.sh
-      timeout: 180
+    - location: application-start.sh
+      timeout: 300
       runas: centos
