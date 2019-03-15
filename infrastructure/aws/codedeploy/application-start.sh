@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd /home/centos/www
+cd /home/centos/www/webapp
 sudo npm install pm2 -g
 sudo pm2 start index.js -f
