@@ -44,18 +44,20 @@ Resources:
         - Key: csye6225
           Value: webapp
       UserData:
-        Fn::Base64: !Sub |
-          - ""
+        Fn::Base64:
+          Fn::Join:
+          - "\n"
           - - "#!/bin/bash"
+            - cd /home/centos
             - cat <<EOT >> env
             - AWS_ACCESS_KEY="AKIAJUMD3J4VVSEVUKLQ"
             - AWS_SECRET_ACCESS_KEY="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"
             - AWS_BUCKET="csye6225-spring2019-panz"
             - WEB_PORT=80
             - Fn::Join:
-              - ''
-              - DB_HOST=
-              - Fn::GetAtt:
+            - ''
+            - - DB_HOST=
+            - - Fn::GetAtt:
                 - MyDB
                 - Endpoint.Address
             - DB_NAME="csye6225-spring2019"
