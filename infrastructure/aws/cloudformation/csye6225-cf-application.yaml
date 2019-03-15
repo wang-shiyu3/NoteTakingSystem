@@ -55,11 +55,11 @@ Resources:
             - AWS_BUCKET="csye6225-spring2019-panz"
             - WEB_PORT=80
             - Fn::Join:
-            - ''
-            - - DB_HOST=
-            - - Fn::GetAtt:
-                - MyDB
-                - Endpoint.Address
+              - ''
+              - - DB_HOST=
+                - Fn::GetAtt:
+                  - MyDB
+                  - Endpoint.Address
             - DB_NAME="csye6225-spring2019"
             - DB_USERNAME="csye6225master"
             - DB_PASSWORD="csye6225password"
