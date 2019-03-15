@@ -74,7 +74,9 @@ Resources:
               - 's3:Get*'
               - 's3:List*'
             Effect: Allow
-            Resource: !Ref ARN
+            Resource:
+              - !Sub '${ARN}/*'
+              - !Ref ARN
       Roles:
         - !Ref CodeDeployEC2ServiceRole
         - !Ref CodeDeployServiceRole

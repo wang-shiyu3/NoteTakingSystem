@@ -3,7 +3,7 @@
 #Create CI-CD Stack
 echo "Enter CICD Stack Name:"
 read STACK_NAME
-echo "Enter S3 bucket name:"
+echo "Enter S3 bucket arn:"
 read ARN
 export ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
 export REGION=us-east-1
