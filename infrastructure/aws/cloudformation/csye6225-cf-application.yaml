@@ -41,8 +41,8 @@ Resources:
       SecurityGroupIds:
         - Fn::ImportValue: !Sub '${ExportStackName}-SecurityGroup'
       Tags:
-        - Key: Name
-          Value: WebApp
+        - Key: csye6225
+          Value: webapp
       UserData:
         Fn::Base64: !Sub |
           - ""

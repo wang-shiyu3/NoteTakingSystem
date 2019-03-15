@@ -184,8 +184,8 @@ Resources:
         DeploymentType: IN_PLACE
         DeploymentOption: WITHOUT_TRAFFIC_CONTROL
       Ec2TagFilters:
-        - Key: Name
-          Value: WebApp
+        - Key: csye6225
+          Value: webapp
           Type: KEY_AND_VALUE
       ServiceRoleArn: !GetAtt CodeDeployServiceRole.Arn
     DependsOn: CodeDeployServiceRole
