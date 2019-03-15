@@ -157,3 +157,40 @@ Resources:
       ManagedPolicyArns:
        - arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole 
       Path: "/"
+<<<<<<< HEAD
+  Ec2InstanceProfile:
+    Type: "AWS::IAM::InstanceProfile"
+    Properties:
+      InstanceProfileName: "EC2profile"
+      Path: "/"
+      Roles:
+        - !Ref CodeDeployEC2ServiceRole
+=======
+
+  CodeDeployApplication:
+    Type: AWS::CodeDeploy::Application
+    Properties:
+      ApplicationName: csye6225-webapp
+      ComputePlatform: EC2/On-premises
+
+  DeploymentGroup:
+    Type: AWS::CodeDeploy::DeploymentGroup
+    Properties:
+      ApplicationName: !Ref CodeDeployApplication
+      AutoRollbackConfiguration:
+        Enabled: true
+        Events: [DEPLOYMENT_FAILURE, DEPLOYMENT_STOP_ON_REQUEST]
+      DeploymentConfigName: CodeDeployDefault.AllAtOnce
+      DeploymentGroupName: csye6225-webapp-deployment
+      DeploymentStyle:
+        DeploymentType: IN_PLACE
+        DeploymentOption: WITH_TRAFFIC_CONTROL
+      Ec2TagFilters:
+        - Key: Name
+          Value: WebApp
+          Type: KEY_AND_VALUE
+      LoadBalancerInfo:
+        AssignPublicIp: "DISABLED"
+      ServiceRoleArn: !GetAtt CodeDeployServiceRole.Arn
+    DependsOn: CodeDeployServiceRole
+>>>>>>> 64a4587772573577a449dc327e8f729778265f95

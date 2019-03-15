@@ -33,12 +33,16 @@ Resources:
       Volumes:
         - Device: "/dev/sdh"
           VolumeId: !Ref Volume
+      IamInstanceProfile: "EC2profile"
       KeyName: csye6225
       SubnetId:
           Fn::ImportValue: !Sub '${ExportStackName}-SubnetB'
       AvailabilityZone: us-east-1b
       SecurityGroupIds:
         - Fn::ImportValue: !Sub '${ExportStackName}-SecurityGroup'
+      Tags:
+        - Key: Name
+          Value: WebApp
   Volume:
     Type: AWS::EC2::Volume
     Properties:
