@@ -1,9 +1,14 @@
 //Including dependency
 const Sequelize = require("sequelize");
-
+const {
+  DB_HOST,
+  DB_NAME,
+  DB_USERNAME,
+  DB_PASSWORD
+} = require("./../configs/config");
 //Setting up the config
-const sequelize = new Sequelize("csye6225", "admin", "xxxxxx", {
-  host: "3.17.36.232",
+const sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
+  host: DB_HOST,
   port: 3306,
   dialect: "mysql",
   logging: false

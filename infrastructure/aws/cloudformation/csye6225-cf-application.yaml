@@ -4,18 +4,18 @@ Description: >-
 AWSTemplateFormatVersion: 2010-09-09
 
 Parameters:
-  image: 
+  image:
     Type: String
   ExportStackName:
     Type: String
-  
+
 Resources:
   DBSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupName: "Database Internet Group"
       GroupDescription: "SSH traffic in, all traffic out."
-      VpcId: 
+      VpcId:
        Fn::ImportValue: !Sub '${ExportStackName}-VPC'
       SecurityGroupIngress:
       - IpProtocol: tcp
@@ -30,14 +30,14 @@ Resources:
     Properties:
       ImageId: !Ref image
       InstanceType: t2.micro
-      Volumes: 
+      Volumes:
         - Device: "/dev/sdh"
           VolumeId: !Ref Volume
       KeyName: csye6225
-      SubnetId: 
+      SubnetId:
           Fn::ImportValue: !Sub '${ExportStackName}-SubnetB'
       AvailabilityZone: us-east-1b
-      SecurityGroupIds: 
+      SecurityGroupIds:
         - Fn::ImportValue: !Sub '${ExportStackName}-SecurityGroup'
   Volume:
     Type: AWS::EC2::Volume
@@ -60,11 +60,11 @@ Resources:
       AllocatedStorage: "100"
       VPCSecurityGroups:
         - !Ref DBSecurityGroup
-  myDBSubnetGroup: 
+  myDBSubnetGroup:
     Type: "AWS::RDS::DBSubnetGroup"
-    Properties: 
+    Properties:
       DBSubnetGroupDescription: "DBSubnets"
-      SubnetIds: 
+      SubnetIds:
         - Fn::ImportValue: !Sub '${ExportStackName}-SubnetA'
         - Fn::ImportValue: !Sub '${ExportStackName}-SubnetB'
         - Fn::ImportValue: !Sub '${ExportStackName}-SubnetC'
@@ -72,16 +72,36 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-        - 
+        -
           AttributeName: "id"
           AttributeType: "S"
-      KeySchema:    
-        -  
+      KeySchema:
+        -
           AttributeName: "id"
           KeyType: "HASH"
-      ProvisionedThroughput: 
+      ProvisionedThroughput:
             ReadCapacityUnits: "5"
             WriteCapacityUnits: "5"
       Tags:
       - Key: Name
         Value: csye6225
+  UserData:
+    Fn::Base64:
+      Fn::Join:
+        - "\n"
+        - - "#!/bin/bash"
+          - cat <<EOT >> env
+          - AWS_ACCESS_KEY="AKIAJUMD3J4VVSEVUKLQ"
+          - AWS_SECRET_ACCESS_KEY="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"
+          - AWS_BUCKET="csye6225-spring2019-panz"
+          - WEB_PORT=80
+          - Fn::Join:
+            - ''
+            - DB_HOST=
+            - Fn::GetAtt:
+              - MyDB
+              - Endpoint.Address
+          - DB_NAME="csye6225-spring2019"
+          - DB_USERNAME="csye6225master"
+          - DB_PASSWORD="csye6225password"
+          - EOT
