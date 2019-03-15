@@ -12,18 +12,18 @@ Parameters:
     Type: "String"
   RESOURCE4:
     Type: "String"
-  ARN:    
+  ARN:
     Type: "String"
 
 Resources:
   IAMPolicy:
     Type: AWS::IAM::ManagedPolicy
-    Properties: 
+    Properties:
       ManagedPolicyName: "circleci-ec2-ami"
-      PolicyDocument: 
+      PolicyDocument:
         Version: 2012-10-17
         Statement:
-          - 
+          -
             Effect: Allow
             Action:
               - ec2:AttachVolume
@@ -61,13 +61,13 @@ Resources:
               - ec2:TerminateInstances
             Resource: '*'
       Users:
-        - 
+        -
           "circleci"
   CodeDeployEc2S3Policies:
     Type: AWS::IAM::ManagedPolicy
     Properties:
       ManagedPolicyName: CodeDeploy-EC2-S3
-      PolicyDocument: 
+      PolicyDocument:
         Version: 2012-10-17
         Statement:
           - Action:
@@ -79,32 +79,32 @@ Resources:
         - !Ref CodeDeployEC2ServiceRole
         - !Ref CodeDeployServiceRole
       Users:
-        - 
+        -
           "circleci"
   CircleCIUploadPolicies:
     Type: AWS::IAM::ManagedPolicy
-    Properties: 
+    Properties:
       ManagedPolicyName: CircleCI-Upload-To-S3
-      PolicyDocument: 
+      PolicyDocument:
         Version: 2012-10-17
         Statement:
-          - 
+          -
             Effect: "Allow"
             Action:
-              - 
+              -
                 's3:PutObject'
             Resource: !Join
               - ''
               - - !Ref ARN
-                - '/*' 
+                - '/*'
       Users:
-        - 
+        -
           "circleci"
   CircleCIDeployPolicy:
     Type: AWS::IAM::ManagedPolicy
-    Properties: 
+    Properties:
       ManagedPolicyName: CirlceCI-Code-Deploy
-      PolicyDocument: 
+      PolicyDocument:
         Version: 2012-10-17
         Statement:
           - Effect: Allow
@@ -155,8 +155,15 @@ Resources:
           - "sts:AssumeRole"
       RoleName: CodeDeployServiceRole
       ManagedPolicyArns:
-       - arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole 
+       - arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole
       Path: "/"
+  Ec2InstanceProfile:
+    Type: "AWS::IAM::InstanceProfile"
+    Properties:
+      InstanceProfileName: "EC2profile"
+      Path: "/"
+      Roles:
+        - !Ref CodeDeployEC2ServiceRole
 
   CodeDeployApplication:
     Type: AWS::CodeDeploy::Application

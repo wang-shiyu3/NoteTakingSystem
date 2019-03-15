@@ -7,10 +7,10 @@ files:
 
 hooks:
   AfterInstall:
-    - location: /infrastructure/aws/codedeploy/npm-install.sh
+    - location: /after-install.sh
       timeout: 180
       runas: centos
   ApplicationStart:
-    - location: /infrastructure/aws/codedeploy/npm-start.sh
+    - location: npm-start.sh
       timeout: 180
       runas: centos
