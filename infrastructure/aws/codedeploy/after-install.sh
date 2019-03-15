@@ -1,5 +1,6 @@
 #!/bin/bash
 cd ~
-mv env /home/centos/www/.env
-cd /home/centos/www/webapp
+cd /home/centos/www
+mv ./env .env
+cd webapp
 sudo npm install
