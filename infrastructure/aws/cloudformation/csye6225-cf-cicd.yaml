@@ -162,7 +162,7 @@ Resources:
     Type: AWS::CodeDeploy::Application
     Properties:
       ApplicationName: csye6225-webapp
-      ComputePlatform: EC2/On-premises
+      ComputePlatform: Server
 
   DeploymentGroup:
     Type: AWS::CodeDeploy::DeploymentGroup
@@ -175,12 +175,10 @@ Resources:
       DeploymentGroupName: csye6225-webapp-deployment
       DeploymentStyle:
         DeploymentType: IN_PLACE
-        DeploymentOption: WITH_TRAFFIC_CONTROL
+        DeploymentOption: WITHOUT_TRAFFIC_CONTROL
       Ec2TagFilters:
         - Key: Name
           Value: WebApp
           Type: KEY_AND_VALUE
-      LoadBalancerInfo:
-        AssignPublicIp: "DISABLED"
       ServiceRoleArn: !GetAtt CodeDeployServiceRole.Arn
     DependsOn: CodeDeployServiceRole
