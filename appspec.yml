@@ -9,12 +9,12 @@ hooks:
   BeforeInstall:
     - location: before-install.sh
       timeout: 300
-      runas: centos
+      runas: root
   AfterInstall:
     - location: after-install.sh
       timeout: 300
-      runas: centos
+      runas: root
   ApplicationStart:
     - location: application-start.sh
       timeout: 300
-      runas: centos
+      runas: root
