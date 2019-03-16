@@ -5,5 +5,4 @@ pwd
 cd /home/centos/
 rm -rf www
 mkdir www
-cd www
 npm cache clean -f
