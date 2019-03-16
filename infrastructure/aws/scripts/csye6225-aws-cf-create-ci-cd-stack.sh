@@ -5,7 +5,7 @@ echo "Enter CICD Stack Name:"
 read STACK_NAME
 echo "Enter S3 bucket arn:"
 read ARN
-echo "Enter your s3 bucket's name of storing note's attachemts [ENTER]: "
+echo "Enter your s3 bucket's arn of storing note's attachemts [ENTER]: "
 read S3Attachments
 
 export ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
