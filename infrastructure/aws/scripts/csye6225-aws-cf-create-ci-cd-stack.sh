@@ -5,6 +5,9 @@ echo "Enter CICD Stack Name:"
 read STACK_NAME
 echo "Enter S3 bucket arn:"
 read ARN
+echo "Enter your s3 bucket's name of storing note's attachemts [ENTER]: "
+read S3Attachments
+
 export ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
 export REGION=us-east-1
 export APPLICATION_NAME=csye6225-webapp
@@ -14,7 +17,7 @@ export RESOURCE3="arn:aws:codedeploy:"$REGION":"$ACCOUNT_ID":deploymentconfig:Co
 export RESOURCE4="arn:aws:codedeploy:"$REGION":"$ACCOUNT_ID":deploymentconfig:CodeDeployDefault.AllAtOnce"
 
 
-aws cloudformation create-stack --stack-name $STACK_NAME --template-body file://../cloudformation/csye6225-cf-cicd.yaml --capabilities CAPABILITY_NAMED_IAM --parameters ParameterKey=RESOURCE1,ParameterValue=$RESOURCE1 ParameterKey=RESOURCE2,ParameterValue=$RESOURCE2 ParameterKey=RESOURCE3,ParameterValue=$RESOURCE3 ParameterKey=RESOURCE4,ParameterValue=$RESOURCE4 ParameterKey=ARN,ParameterValue=$ARN
+aws cloudformation create-stack --stack-name $STACK_NAME --template-body file://../cloudformation/csye6225-cf-cicd.yaml --capabilities CAPABILITY_NAMED_IAM --parameters ParameterKey=S3Attachments,ParameterValue=$S3Attachments ParameterKey=RESOURCE1,ParameterValue=$RESOURCE1 ParameterKey=RESOURCE2,ParameterValue=$RESOURCE2 ParameterKey=RESOURCE3,ParameterValue=$RESOURCE3 ParameterKey=RESOURCE4,ParameterValue=$RESOURCE4 ParameterKey=ARN,ParameterValue=$ARN
 
 i=1
 sp="/-\|"

@@ -14,6 +14,8 @@ Parameters:
     Type: "String"
   ARN:
     Type: "String"
+  S3Attachments:
+    Type: "String"
 
 Resources:
   IAMPolicy:
@@ -77,6 +79,14 @@ Resources:
             Resource:
               - !Sub '${ARN}/*'
               - !Ref ARN
+          - Action:
+              - 's3:PutObject'
+              - 's3:Get*'
+              - 's3:List*'
+            Effect: Allow
+            Resource:
+              - !Sub '${S3Attachments}/*'
+              - !Ref S3Attachments
       Roles:
         - !Ref CodeDeployEC2ServiceRole
         - !Ref CodeDeployServiceRole

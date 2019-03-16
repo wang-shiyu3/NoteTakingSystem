@@ -8,6 +8,8 @@ Parameters:
     Type: String
   ExportStackName:
     Type: String
+  S3Attachments:
+    Type: String
 
 Resources:
   DBSecurityGroup:
@@ -48,11 +50,13 @@ Resources:
           Fn::Join:
           - "\n"
           - - "#!/bin/bash"
+            - yum install python-dev build-essential libssl-dev libffi-dev libxml2-dev libxslt1-dev zlib1g-dev python2.7 python-pip -y
+            - pip install awscli
             - cd /home/centos
             - cat <<EOT >> env
-            - AWS_ACCESS_KEY="AKIAJUMD3J4VVSEVUKLQ"
-            - AWS_SECRET_ACCESS_KEY="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"
-            - AWS_BUCKET="csye6225-spring2019-panz"
+            - AWS_ACCESS_KEY=""
+            - AWS_SECRET_ACCESS_KEY=""
+            - AWS_BUCKET="${S3Attachments}"
             - WEB_PORT=80
             - Fn::Join:
               - ''
