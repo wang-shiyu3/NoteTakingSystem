@@ -12,4 +12,6 @@ const Note = sequelize.define("note", {
   content: Sequelize.STRING
 });
 
+Note.sync();
+
 module.exports = Note;
