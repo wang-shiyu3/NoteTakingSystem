@@ -51,3 +51,14 @@ jobs:
           name: Make CodeDeploy API call
           command: |
             echo "Hello CodeDeploy"
+      - run:
+          name: Create Deployment
+          command: |
+            echo "Hello CodeDeploy"
+            aws deploy create-deployment\
+              --region ${AWS_REGION}\
+              --auto-rollback-configuration enabled=true,events=DEPLOYMENT_FAILURE\
+              --application-name csye6225-webapp\
+              --deployment-config-name CodeDeployDefault.OneAtATime\
+              --deployment-group-name csye6225-webapp-deployment\
+              --s3-location bucket=${CODE_DEPLOY_S3},bundleType=zip,key=csye6225-web-app-${CIRCLE_BUILD_NUM}.zip
