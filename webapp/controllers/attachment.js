@@ -45,7 +45,9 @@ router.put("/:id", upload.single("doc"), async ctx => {
   } = ctx;
   try {
     const url = await s3.upload(file);
-    const attachment = await Attachment.update({ url }, { where: { id } });
+    let attachment = await Attachment.findOne({ where: { id } });
+    await s3.remove(attachment.url.split("/").pop());
+    attachment = await Attachment.update({ url }, { where: { id } });
     ctx.body = { row_affected: attachment };
   } catch (err) {
     console.log(err);
