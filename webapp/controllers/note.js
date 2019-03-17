@@ -1,5 +1,7 @@
 const Router = require("koa-router");
 const Note = require("./../model/note");
+const Attachment = require("./../model/attachment");
+const s3 = require("../services/s3");
 
 const router = new Router();
 
@@ -10,7 +12,10 @@ router.get("/all", async ctx => {
     const notes = await Note.findAll({ where: { uid } });
     ctx.body = notes;
   } catch (err) {
-    console.log(err);
+    ctx.status = err.statusCode || err.status || 500;
+    ctx.body = {
+      message: err.message
+    };
   }
 });
 
@@ -24,7 +29,10 @@ router.get("/:id", async ctx => {
     const note = await Note.find({ where: { uid, id } });
     ctx.body = note.toJSON();
   } catch (err) {
-    console.log(err);
+    ctx.status = err.statusCode || err.status || 500;
+    ctx.body = {
+      message: err.message
+    };
   }
 });
 
@@ -42,7 +50,10 @@ router.post("/", async ctx => {
     const { uid: noo, ...ret } = note.toJSON();
     ctx.body = ret;
   } catch (err) {
-    console.log(err);
+    ctx.status = err.statusCode || err.status || 500;
+    ctx.body = {
+      message: err.message
+    };
   }
 });
 
@@ -60,7 +71,10 @@ router.put("/:id", async ctx => {
     const note = await Note.update({ content }, { where: { id, uid } });
     ctx.body = { row_affected: note };
   } catch (err) {
-    console.log(err);
+    ctx.status = err.statusCode || err.status || 500;
+    ctx.body = {
+      message: err.message
+    };
   }
 });
 
@@ -73,9 +87,17 @@ router.delete("/:id", async ctx => {
 
   try {
     const note = await Note.destroy({ where: { id, uid } });
-    ctx.body = { row_affected: note };
+    const attachments = await Attachment.findAll({ where: { nid: id } });
+    for (let attachment of attachments) {
+      await s3.remove(attachment.url.split("/").pop());
+    }
+    const attachment = await Attachment.destroy({ where: { nid: id } });
+    ctx.body = { row_affected: { note, attachment } };
   } catch (err) {
-    console.log(err);
+    ctx.status = err.statusCode || err.status || 500;
+    ctx.body = {
+      message: err.message
+    };
   }
 });
 

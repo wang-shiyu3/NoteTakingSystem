@@ -34,7 +34,7 @@ router.post("/", upload.single("doc"), async ctx => {
     const attachment = await Attachment.create({ url, nid });
     ctx.body = attachment ? attachment.toJSON() : {};
   } catch (err) {
-    console.log(err);
+    console.log(err)
   }
 });
 
@@ -50,7 +50,8 @@ router.put("/:id", upload.single("doc"), async ctx => {
     attachment = await Attachment.update({ url }, { where: { id } });
     ctx.body = { row_affected: attachment };
   } catch (err) {
-    console.log(err);
+    ctx.status = 500;
+    ctx.body = err;
   }
 });
 
