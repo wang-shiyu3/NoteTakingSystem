@@ -83,6 +83,7 @@ Resources:
               - 's3:PutObject'
               - 's3:Get*'
               - 's3:List*'
+              - 's3:DeleteObject'
             Effect: Allow
             Resource:
               - !Sub '${S3Attachments}/*'
