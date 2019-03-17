@@ -8,9 +8,13 @@ echo "Enter your network stack name [ENTER]: "
 read ExportStackName
 echo "Enter your s3 bucket's name of storing note's attachemts [ENTER]: "
 read S3Attachments
+echo "Enter DBUsername: "
+read DBUsername
+echo "Enter DBPassword: "
+read DBPassword
 
 
-aws cloudformation create-stack --stack-name ${stack} --template-body file://../cloudformation/csye6225-cf-application.yaml  --parameters ParameterKey=S3Attachments,ParameterValue=${S3Attachments} ParameterKey=image,ParameterValue=${ImageId}  ParameterKey=ExportStackName,ParameterValue=${ExportStackName}
+aws cloudformation create-stack --stack-name ${stack} --template-body file://../cloudformation/csye6225-cf-application.yaml  --parameters ParameterKey=S3Attachments,ParameterValue=${S3Attachments} ParameterKey=image,ParameterValue=${ImageId}  ParameterKey=ExportStackName,ParameterValue=${ExportStackName} ParameterKey=DBUsername,ParameterValue=${DBUsername} ParameterKey=DBPassword,ParameterValue=${DBPassword}
 i=1
 sp="/-\|"
 while true
