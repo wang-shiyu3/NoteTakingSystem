@@ -10,6 +10,10 @@ Parameters:
     Type: String
   S3Attachments:
     Type: String
+  DBPassword:
+    Type: String
+  DBUsername:
+    Type: String
 
 Resources:
   DBSecurityGroup:
@@ -68,8 +72,14 @@ Resources:
                   - MyDB
                   - Endpoint.Address
             - DB_NAME="csye6225"
-            - DB_USERNAME="csye6225master"
-            - DB_PASSWORD="csye6225password"
+            - Fn::Join:
+              - ""
+              - - DB_USERNAME=
+                - !Ref DBUsername
+            - Fn::Join:
+              - ""
+              - - DB_PASSWORD=
+                - !Ref DBPassword
             - EOT
   Volume:
     Type: AWS::EC2::Volume
@@ -84,8 +94,8 @@ Resources:
       Engine: MySQL
       DBInstanceIdentifier: csye6225-spring2019
       MultiAZ: false
-      MasterUsername: "csye6225master"
-      MasterUserPassword: "csye6225password"
+      MasterUsername: !Ref DBUsername
+      MasterUserPassword: !Ref DBPassword
       DBSubnetGroupName: !Ref myDBSubnetGroup
       PubliclyAccessible: true
       DBName: "csye6225"
