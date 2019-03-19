@@ -1,6 +1,7 @@
 const Router = require("koa-router");
 const multer = require("koa-multer");
 const upload = multer({ dest: "./../uploads/" });
+const logger = require("./../services/log");
 
 const Attachment = require("./../model/attachment");
 const s3 = require("../services/s3");
@@ -13,6 +14,7 @@ router.get("/", async ctx => {
   } = ctx;
 
   try {
+    logger.info(`Get all attachment of ${nid}`);
     const attachment = await Attachment.findAll({
       where: { nid },
       order: [["createdAt", "ASC"]]
@@ -34,7 +36,7 @@ router.post("/", upload.single("doc"), async ctx => {
     const attachment = await Attachment.create({ url, nid });
     ctx.body = attachment ? attachment.toJSON() : {};
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 });
 
@@ -50,8 +52,11 @@ router.put("/:id", upload.single("doc"), async ctx => {
     attachment = await Attachment.update({ url }, { where: { id } });
     ctx.body = { row_affected: attachment };
   } catch (err) {
-    ctx.status = 500;
-    ctx.body = err;
+    logger.error(err.message);
+    ctx.status = err.statusCode || err.status || 500;
+    ctx.body = {
+      message: err.message
+    };
   }
 });
 

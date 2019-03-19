@@ -1,5 +1,7 @@
 const Router = require("koa-router");
 const User = require("./../model/user");
+const logger = require("./../services/log");
+
 const {
   isEmail,
   isStrongPwd,
@@ -35,8 +37,10 @@ router.post("/register", async ctx => {
   try {
     const hash = await encryptPwd(password);
     const user = await User.create({ username, password: hash });
+    logger.info("User was created successfully");
     ctx.body = { message: "User was created successfully" };
   } catch (err) {
+    logger.error("User was created failed");
     console.log(err);
   }
 });
