@@ -84,6 +84,8 @@ Resources:
               - 's3:Get*'
               - 's3:List*'
               - 's3:DeleteObject'
+              - 'cloudwatch:*'
+              - 'ssm:*'
             Effect: Allow
             Resource:
               - !Sub '${S3Attachments}/*'
@@ -170,6 +172,7 @@ Resources:
       ManagedPolicyArns:
        - arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole
       Path: "/"
+
   Ec2InstanceProfile:
     Type: "AWS::IAM::InstanceProfile"
     Properties:
@@ -202,3 +205,4 @@ Resources:
           Type: KEY_AND_VALUE
       ServiceRoleArn: !GetAtt CodeDeployServiceRole.Arn
     DependsOn: CodeDeployServiceRole
+  
