@@ -205,4 +205,16 @@ Resources:
           Type: KEY_AND_VALUE
       ServiceRoleArn: !GetAtt CodeDeployServiceRole.Arn
     DependsOn: CodeDeployServiceRole
-  
+
+  myLogGroup:
+   Type: AWS::Logs::LogGroup
+   Properties:
+    LogGroupName : csye6225_spring2019
+    RetentionInDays: 7
+
+  LogStream:
+    Type: AWS::Logs::LogStream
+    DependsOn: myLogGroup
+    Properties:
+      LogGroupName: "csye6225_spring2019"
+      LogStreamName: "webapp"
