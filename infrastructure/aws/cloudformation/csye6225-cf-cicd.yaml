@@ -85,6 +85,7 @@ Resources:
               - 's3:List*'
               - 's3:DeleteObject'
               - 'cloudwatch:*'
+              - 'logs:*'
               - 'ssm:*'
             Effect: Allow
             Resource:
