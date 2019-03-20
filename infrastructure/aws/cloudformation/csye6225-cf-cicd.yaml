@@ -84,13 +84,17 @@ Resources:
               - 's3:Get*'
               - 's3:List*'
               - 's3:DeleteObject'
-              - 'cloudwatch:*'
-              - 'logs:*'
-              - 'ssm:*'
             Effect: Allow
             Resource:
               - !Sub '${S3Attachments}/*'
               - !Ref S3Attachments
+          - Action:
+            - 'cloudwatch:*'
+            - 'logs:*'
+            - 'ssm:*'
+            Effect: Allow
+            Resource:
+              - '*'
       Roles:
         - !Ref CodeDeployEC2ServiceRole
         - !Ref CodeDeployServiceRole
