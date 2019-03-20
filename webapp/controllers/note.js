@@ -6,7 +6,7 @@ const s3 = require("../services/s3");
 const router = new Router();
 
 // Get all notes
-router.get("/all-pzc", async ctx => {
+router.get("/all", async ctx => {
   try {
     const uid = ctx.request.uid;
     const notes = await Note.findAll({ where: { uid } });
