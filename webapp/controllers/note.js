@@ -2,6 +2,7 @@ const Router = require("koa-router");
 const Note = require("./../model/note");
 const Attachment = require("./../model/attachment");
 const s3 = require("../services/s3");
+const logger = require("./../services/log");
 
 const router = new Router();
 
@@ -10,6 +11,7 @@ router.get("/all", async ctx => {
   try {
     const uid = ctx.request.uid;
     const notes = await Note.findAll({ where: { uid } });
+    logger.info("Get all notes");
     ctx.body = notes;
   } catch (err) {
     ctx.status = err.statusCode || err.status || 500;
@@ -27,8 +29,10 @@ router.get("/:id", async ctx => {
   } = ctx;
   try {
     const note = await Note.find({ where: { uid, id } });
+    logger.info("Get one note");
     ctx.body = note.toJSON();
   } catch (err) {
+    logger.error(err.message);
     ctx.status = err.statusCode || err.status || 500;
     ctx.body = {
       message: err.message
