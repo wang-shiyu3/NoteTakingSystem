@@ -88,6 +88,12 @@ Resources:
             Resource:
               - !Sub '${S3Attachments}/*'
               - !Ref S3Attachments
+          - Action:
+            - 'cloudwatch:*'
+            - 'logs:*'
+            - 'ssm:*'
+            Effect: Allow
+            Resource: "*"
       Roles:
         - !Ref CodeDeployEC2ServiceRole
         - !Ref CodeDeployServiceRole
@@ -170,6 +176,7 @@ Resources:
       ManagedPolicyArns:
        - arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole
       Path: "/"
+
   Ec2InstanceProfile:
     Type: "AWS::IAM::InstanceProfile"
     Properties:
@@ -202,3 +209,16 @@ Resources:
           Type: KEY_AND_VALUE
       ServiceRoleArn: !GetAtt CodeDeployServiceRole.Arn
     DependsOn: CodeDeployServiceRole
+
+  myLogGroup:
+   Type: AWS::Logs::LogGroup
+   Properties:
+    LogGroupName : csye6225_spring2019
+    RetentionInDays: 7
+
+  LogStream:
+    Type: AWS::Logs::LogStream
+    DependsOn: myLogGroup
+    Properties:
+      LogGroupName: "csye6225_spring2019"
+      LogStreamName: "webapp"
