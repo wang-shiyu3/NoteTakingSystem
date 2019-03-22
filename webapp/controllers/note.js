@@ -9,17 +9,13 @@ const router = new Router();
 
 // Get all notes
 router.get("/all", async ctx => {
-  try {
-    const uid = ctx.request.uid;
-    const notes = await Note.findAll({ where: { uid } });
-    logger.info("Get all notes");
-    ctx.body = notes;
-  } catch (err) {
-    ctx.status = err.statusCode || err.status || 500;
-    ctx.body = {
-      message: err.message
-    };
-  }
+  const uid = ctx.request.uid;
+  const notes = await Note.findAll({
+    where: { uid },
+    include: [{ model: Attachment }]
+  });
+  logger.info("Get all notes");
+  ctx.body = notes;
 });
 
 // Get one note
@@ -28,19 +24,12 @@ router.get("/:id", async ctx => {
     request: { uid },
     params: { id }
   } = ctx;
-  try {
-    const note = await Note.find({ where: { uid, id }, include: [
-      { model: Attachment}
-   ] });
-    logger.info("Get one note");
-    ctx.body = note.toJSON();
-  } catch (err) {
-    logger.error(err.message);
-    ctx.status = err.statusCode || err.status || 500;
-    ctx.body = {
-      message: err.message
-    };
-  }
+  const note = await Note.find({
+    where: { uid, id },
+    include: [{ model: Attachment }]
+  });
+  logger.info("Get one note");
+  ctx.body = note.toJSON();
 });
 
 // Create new one
