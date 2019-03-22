@@ -34,15 +34,10 @@ router.post("/register", async ctx => {
     return;
   }
 
-  try {
-    const hash = await encryptPwd(password);
-    const user = await User.create({ username, password: hash });
-    logger.info("User was created successfully");
-    ctx.body = { message: "User was created successfully" };
-  } catch (err) {
-    logger.error("User was created failed");
-    console.log(err);
-  }
+  const hash = await encryptPwd(password);
+  const user = await User.create({ username, password: hash });
+  logger.info("User was created successfully");
+  ctx.body = { message: "User was created successfully" };
 });
 
 module.exports = router;
