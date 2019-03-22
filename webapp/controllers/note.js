@@ -40,17 +40,10 @@ router.post("/", async ctx => {
       uid
     }
   } = ctx;
-  try {
-    const note = await Note.create({ uid, content, title });
-    ctx.status = 201;
-    const { uid: noo, ...ret } = note.toJSON();
-    ctx.body = ret;
-  } catch (err) {
-    ctx.status = err.statusCode || err.status || 500;
-    ctx.body = {
-      message: err.message
-    };
-  }
+  const note = await Note.create({ uid, content, title });
+  ctx.status = 201;
+  const { uid: noo, ...ret } = note.toJSON();
+  ctx.body = ret;
 });
 
 // Update new one
@@ -62,16 +55,8 @@ router.put("/:id", async ctx => {
     },
     params: { id }
   } = ctx;
-  try {
-    console.log(content);
-    const note = await Note.update({ content }, { where: { id, uid } });
-    ctx.body = { row_affected: note };
-  } catch (err) {
-    ctx.status = err.statusCode || err.status || 500;
-    ctx.body = {
-      message: err.message
-    };
-  }
+  const note = await Note.update({ content }, { where: { id, uid } });
+  ctx.body = { row_affected: note };
 });
 
 // Delete one
@@ -81,20 +66,13 @@ router.delete("/:id", async ctx => {
     params: { id }
   } = ctx;
 
-  try {
-    const note = await Note.destroy({ where: { id, uid } });
-    const attachments = await Attachment.findAll({ where: { nid: id } });
-    for (let attachment of attachments) {
-      await s3.remove(attachment.url.split("/").pop());
-    }
-    const attachment = await Attachment.destroy({ where: { nid: id } });
-    ctx.body = { row_affected: { note, attachment } };
-  } catch (err) {
-    ctx.status = err.statusCode || err.status || 500;
-    ctx.body = {
-      message: err.message
-    };
+  const note = await Note.destroy({ where: { id, uid } });
+  const attachments = await Attachment.findAll({ where: { nid: id } });
+  for (let attachment of attachments) {
+    await s3.remove(attachment.url.split("/").pop());
   }
+  const attachment = await Attachment.destroy({ where: { nid: id } });
+  ctx.body = { row_affected: { note, attachment } };
 });
 
 module.exports = router;
