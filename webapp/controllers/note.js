@@ -1,5 +1,6 @@
 const Router = require("koa-router");
 const Note = require("./../model/note");
+
 const Attachment = require("./../model/attachment");
 const s3 = require("../services/s3");
 const logger = require("./../services/log");
@@ -28,7 +29,9 @@ router.get("/:id", async ctx => {
     params: { id }
   } = ctx;
   try {
-    const note = await Note.find({ where: { uid, id } });
+    const note = await Note.find({ where: { uid, id }, include: [
+      { model: Attachment}
+   ] });
     logger.info("Get one note");
     ctx.body = note.toJSON();
   } catch (err) {

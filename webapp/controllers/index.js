@@ -12,10 +12,18 @@ const noteService = require("./../services/note");
 
 router.use(async (ctx, next) => {
   const start = Date.now();
-  await next();
-  const ms = Date.now() - start;
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
   statsd.increment(`${ctx.method} ${ctx.url}`);
+  try {
+    await next();
+    const ms = Date.now() - start;
+    // console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
+  } catch (err) {
+    logger.error(err.message);
+    ctx.status = err.statusCode || err.status || 500;
+    ctx.body = {
+      message: err.message
+    };
+  }
 });
 
 router.get("/", basicAuth, ctx => {

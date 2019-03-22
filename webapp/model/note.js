@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 const sequelize = require("./../services/db-connect");
-
+const Attachment = require("./attachment");
 const Note = sequelize.define("note", {
   id: {
     type: Sequelize.UUID,
@@ -13,5 +13,6 @@ const Note = sequelize.define("note", {
 });
 
 Note.sync();
+Note.hasMany(Attachment,{ foreignKey: 'nid' })
 
 module.exports = Note;

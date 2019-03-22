@@ -12,17 +12,12 @@ router.get("/", async ctx => {
   const {
     params: { nid }
   } = ctx;
-
-  try {
-    logger.info(`Get all attachment of ${nid}`);
-    const attachment = await Attachment.findAll({
-      where: { nid },
-      order: [["createdAt", "ASC"]]
-    });
-    ctx.body = attachment || {};
-  } catch (err) {
-    console.log(err);
-  }
+  logger.info(`Get all attachment of ${nid}`);
+  const attachment = await Attachment.findAll({
+    where: { nid },
+    order: [["createdAt", "ASC"]]
+  });
+  ctx.body = attachment || {};
 });
 
 router.post("/", upload.single("doc"), async ctx => {
@@ -30,14 +25,9 @@ router.post("/", upload.single("doc"), async ctx => {
     req: { file },
     params: { nid }
   } = ctx;
-
-  try {
-    const url = await s3.upload(file);
-    const attachment = await Attachment.create({ url, nid });
-    ctx.body = attachment ? attachment.toJSON() : {};
-  } catch (err) {
-    console.log(err);
-  }
+  const url = await s3.upload(file);
+  const attachment = await Attachment.create({ url, nid });
+  ctx.body = attachment ? attachment.toJSON() : {};
 });
 
 router.put("/:id", upload.single("doc"), async ctx => {
@@ -45,33 +35,21 @@ router.put("/:id", upload.single("doc"), async ctx => {
     req: { file },
     params: { id }
   } = ctx;
-  try {
-    const url = await s3.upload(file);
-    let attachment = await Attachment.findOne({ where: { id } });
-    await s3.remove(attachment.url.split("/").pop());
-    attachment = await Attachment.update({ url }, { where: { id } });
-    ctx.body = { row_affected: attachment };
-  } catch (err) {
-    logger.error(err.message);
-    ctx.status = err.statusCode || err.status || 500;
-    ctx.body = {
-      message: err.message
-    };
-  }
+  const url = await s3.upload(file);
+  let attachment = await Attachment.findOne({ where: { id } });
+  await s3.remove(attachment.url.split("/").pop());
+  attachment = await Attachment.update({ url }, { where: { id } });
+  ctx.body = { row_affected: attachment };
 });
 
 router.delete("/:id", async ctx => {
   const {
     params: { id }
   } = ctx;
-  try {
-    const attachment = await Attachment.findOne({ where: { id } });
-    await s3.remove(attachment.url.split("/").pop());
-    const deleted = await attachment.destroy();
-    ctx.body = { row_affected: deleted ? 1 : 0 };
-  } catch (err) {
-    console.log(err);
-  }
+  const attachment = await Attachment.findOne({ where: { id } });
+  await s3.remove(attachment.url.split("/").pop());
+  const deleted = await attachment.destroy();
+  ctx.body = { row_affected: deleted ? 1 : 0 };
 });
 
 module.exports = router;
