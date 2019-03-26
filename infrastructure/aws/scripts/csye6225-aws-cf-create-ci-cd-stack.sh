@@ -3,10 +3,13 @@
 #Create CI-CD Stack
 echo "Enter CICD Stack Name:"
 read STACK_NAME
-echo "Enter S3 bucket arn:"
-read ARN
-echo "Enter your s3 bucket's arn of storing note's attachemts [ENTER]: "
-read S3Attachments
+# echo "Enter S3 bucket arn:"
+# read ARN
+# echo "Enter your s3 bucket's arn of storing note's attachemts [ENTER]: "
+# read S3Attachments
+
+ARN='arn:aws:s3:::code-deploy.csye6225-spring2019-wangshiyu3.me'
+S3Attachments='arn:aws:s3:::csye6225-spring2019-wangshiyu3.me.csye6225.com'
 
 export ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
 export REGION=us-east-1
