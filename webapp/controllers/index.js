@@ -10,6 +10,9 @@ const attachment = require("./attachment");
 const basicAuth = require("./../filters/basic_auth");
 const noteService = require("./../services/note");
 
+const reset = require("./../services/reset");
+
+
 router.use(async (ctx, next) => {
   const start = Date.now();
   statsd.increment(`${ctx.method} ${ctx.url}`);
@@ -25,6 +28,8 @@ router.use(async (ctx, next) => {
     };
   }
 });
+
+router.post("/reset", await reset);
 
 router.get("/", basicAuth, ctx => {
   logger.info(dayjs().format("HH:mm:ss MM/DD/YYYY"));
