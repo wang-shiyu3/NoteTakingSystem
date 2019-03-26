@@ -176,25 +176,6 @@ Resources:
       ManagedPolicyArns:
        - arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole
       Path: "/"
-  LambdaExecutionRole: 
-    Type: AWS::IAM::Role
-    Properties: 
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-        - Effect: Allow
-          Principal: 
-            Service: 
-            - "lambda.amazonaws.com"
-          Action: 
-          - "sts:AssumeRole"
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
-        - arn:aws:iam::aws:policy/AmazonSESFullAccess
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaDynamoDBExecutionRole
-      Path: "/"
-      RoleName: LambdaExecutionRole
 
   Ec2InstanceProfile:
     Type: "AWS::IAM::InstanceProfile"
@@ -226,6 +207,27 @@ Resources:
         - Key: csye6225
           Value: webapp
           Type: KEY_AND_VALUE
+      ServiceRoleArn: !GetAtt CodeDeployServiceRole.Arn
+    DependsOn: CodeDeployServiceRole
+
+  CodeDeployApplicationLambda:
+    Type: AWS::CodeDeploy::Application
+    Properties:
+      ApplicationName: csye6225-lambda
+      ComputePlatform: Lambda
+
+  DeploymentGroupLambda:
+    Type: AWS::CodeDeploy::DeploymentGroup
+    Properties:
+      ApplicationName: !Ref CodeDeployApplicationLambda
+      AutoRollbackConfiguration:
+        Enabled: true
+        Events: [DEPLOYMENT_FAILURE, DEPLOYMENT_STOP_ON_REQUEST]
+      DeploymentConfigName: CodeDeployDefault.LambdaAllAtOnce
+      DeploymentGroupName: csye6225-lambda-deployment
+      DeploymentStyle:
+        DeploymentType: BLUE_GREEN
+        DeploymentOption: WITH_TRAFFIC_CONTROL
       ServiceRoleArn: !GetAtt CodeDeployServiceRole.Arn
     DependsOn: CodeDeployServiceRole
 
