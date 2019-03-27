@@ -158,6 +158,7 @@ Resources:
           - Effect: "Allow"
             Action:
               - 'cloudformation:CreateStack'
+              - 'cloudformation:DeleteStack'
               - 'cloudformation:DescribeStacks'
               - 'iam:*'
             Resource: '*'
