@@ -33,8 +33,6 @@ Resources:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaDynamoDBExecutionRole
       Path: "/"
       RoleName: LambdaExecutionRole
-      Users:
-        - "circleci"
   LambdaInvokePermission:
     Type: 'AWS::Lambda::Permission'
     Properties:

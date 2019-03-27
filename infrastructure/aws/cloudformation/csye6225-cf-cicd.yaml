@@ -92,6 +92,7 @@ Resources:
             - 'cloudwatch:*'
             - 'logs:*'
             - 'ssm:*'
+            - 'lambda:*'
             Effect: Allow
             Resource: "*"
       Roles:
