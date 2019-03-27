@@ -33,6 +33,8 @@ Resources:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaDynamoDBExecutionRole
       Path: "/"
       RoleName: LambdaExecutionRole
+      Users:
+        - "circleci"
   LambdaInvokePermission:
     Type: 'AWS::Lambda::Permission'
     Properties:
@@ -55,7 +57,7 @@ Resources:
       FunctionName: "SendEmail"
       Handler: "index.handler"
       Role: !GetAtt LambdaExecutionRole.Arn
-      Runtime: "nodejs10.9"
+      Runtime: "nodejs8.10"
   SNSService:
     Type: "AWS::SNS::Topic"
     Properties:
