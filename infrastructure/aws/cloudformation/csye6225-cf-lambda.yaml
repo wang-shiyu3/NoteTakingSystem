@@ -3,9 +3,6 @@ Description: >-
 AWSTemplateFormatVersion: 2010-09-09
 
 Parameters:
-  Email:
-    Description: Email address to receive email
-    Type: "String"
   S3bucketName:
     Description: S3 bucket name
     Type: "String"
