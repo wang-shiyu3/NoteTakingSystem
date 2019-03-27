@@ -130,6 +130,7 @@ Resources:
       ProvisionedThroughput:
             ReadCapacityUnits: "5"
             WriteCapacityUnits: "5"
+      TableName: csye6225
       Tags:
       - Key: Name
         Value: csye6225
