@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 echo "Enter your stack name [ENTER]: "
 read stack
-echo "Enter your email address to receive email [ENTER]: "
-read Email
 echo "Enter your s3 bucket's name of CodeDeploy [ENTER]: "
 read S3bucketName
 echo "Enter Domain name [ENTER]: "
