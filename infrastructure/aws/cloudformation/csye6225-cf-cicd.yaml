@@ -148,6 +148,22 @@ Resources:
               - !Ref RESOURCE4
       Users:
         - "circleci"
+  CreatStackPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: Creat-Stack-Policy
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: "Allow"
+            Action:
+              - 'cloudformation:CreateStack'
+              - 'cloudformation:DescribeStacks'
+              - 'iam:*'
+            Resource: '*'
+      Users:
+        -
+          "circleci"
   CodeDeployEC2ServiceRole:
     Type: AWS::IAM::Role
     Properties:
@@ -209,27 +225,6 @@ Resources:
         - Key: csye6225
           Value: webapp
           Type: KEY_AND_VALUE
-      ServiceRoleArn: !GetAtt CodeDeployServiceRole.Arn
-    DependsOn: CodeDeployServiceRole
-
-  CodeDeployApplicationLambda:
-    Type: AWS::CodeDeploy::Application
-    Properties:
-      ApplicationName: csye6225-lambda
-      ComputePlatform: Lambda
-
-  DeploymentGroupLambda:
-    Type: AWS::CodeDeploy::DeploymentGroup
-    Properties:
-      ApplicationName: !Ref CodeDeployApplicationLambda
-      AutoRollbackConfiguration:
-        Enabled: true
-        Events: [DEPLOYMENT_FAILURE, DEPLOYMENT_STOP_ON_REQUEST]
-      DeploymentConfigName: CodeDeployDefault.LambdaAllAtOnce
-      DeploymentGroupName: csye6225-lambda-deployment
-      DeploymentStyle:
-        DeploymentType: BLUE_GREEN
-        DeploymentOption: WITH_TRAFFIC_CONTROL
       ServiceRoleArn: !GetAtt CodeDeployServiceRole.Arn
     DependsOn: CodeDeployServiceRole
 
