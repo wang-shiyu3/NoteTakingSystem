@@ -29,7 +29,7 @@ router.use(async (ctx, next) => {
   }
 });
 
-router.post("/reset", await reset);
+router.post("/reset", reset);
 
 router.get("/", basicAuth, ctx => {
   logger.info(dayjs().format("HH:mm:ss MM/DD/YYYY"));

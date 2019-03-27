@@ -2,8 +2,10 @@ const logger = require("./log");
 const { isUserExisted } = require("./user");
 const { TOPIC_NOTIFY_ARN } = require("./../configs/config");
 const AWS = require("aws-sdk");
+AWS.config.update({ region: "us-east-1" });
+
 const reset = async ctx => {
-  const { email } = request.body;
+  const { email } = ctx.request.body;
   if (!isUserExisted) {
     ctx.status = 500;
     ctx.body = {
