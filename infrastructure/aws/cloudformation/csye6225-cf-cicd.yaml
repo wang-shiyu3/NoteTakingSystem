@@ -92,6 +92,8 @@ Resources:
             - 'cloudwatch:*'
             - 'logs:*'
             - 'ssm:*'
+            - 'lambda:*'
+            - 'sns:*'
             Effect: Allow
             Resource: "*"
       Roles:
@@ -146,6 +148,23 @@ Resources:
               - !Ref RESOURCE4
       Users:
         - "circleci"
+  CreatStackPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: Creat-Stack-Policy
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: "Allow"
+            Action:
+              - 'cloudformation:CreateStack'
+              - 'cloudformation:DeleteStack'
+              - 'cloudformation:DescribeStacks'
+              - 'iam:*'
+            Resource: '*'
+      Users:
+        -
+          "circleci"
   CodeDeployEC2ServiceRole:
     Type: AWS::IAM::Role
     Properties:
