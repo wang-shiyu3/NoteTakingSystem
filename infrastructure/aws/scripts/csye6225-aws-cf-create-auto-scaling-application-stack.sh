@@ -14,9 +14,19 @@ echo "Enter DBUsername: "
 read DBUsername
 echo "Enter DBPassword: "
 read DBPassword
+echo "Enter DomainName: "
+read DomainName
 
 
-aws cloudformation create-stack --stack-name ${stack} --template-body file://../cloudformation/csye6225-cf-auto-scaling-application.yaml  --parameters ParameterKey=SNSARN,ParameterValue=${SNSARN} ParameterKey=S3Attachments,ParameterValue=${S3Attachments} ParameterKey=image,ParameterValue=${ImageId}  ParameterKey=ExportStackName,ParameterValue=${ExportStackName} ParameterKey=DBUsername,ParameterValue=${DBUsername} ParameterKey=DBPassword,ParameterValue=${DBPassword}
+aws cloudformation create-stack --stack-name ${stack}\
+ --template-body file://../cloudformation/csye6225-cf-auto-scaling-application.yaml\
+ --parameters ParameterKey=SNSARN,ParameterValue=${SNSARN}\
+  ParameterKey=S3Attachments,ParameterValue=${S3Attachments}\
+  ParameterKey=image,ParameterValue=${ImageId}\
+  ParameterKey=ExportStackName,ParameterValue=${ExportStackName}\
+  ParameterKey=DBUsername,ParameterValue=${DBUsername}\
+  ParameterKey=DBPassword,ParameterValue=${DBPassword}\
+  ParameterKey=DomainName,ParameterValue=${DomainName}
 i=1
 sp="/-\|"
 while true
