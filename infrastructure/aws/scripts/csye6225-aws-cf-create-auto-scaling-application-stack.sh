@@ -16,6 +16,8 @@ echo "Enter DBPassword: "
 read DBPassword
 echo "Enter DomainName: "
 read DomainName
+echo "Enter the ARN of Certificate: "
+read CertARN
 
 
 aws cloudformation create-stack --stack-name ${stack}\
@@ -26,7 +28,9 @@ aws cloudformation create-stack --stack-name ${stack}\
   ParameterKey=ExportStackName,ParameterValue=${ExportStackName}\
   ParameterKey=DBUsername,ParameterValue=${DBUsername}\
   ParameterKey=DBPassword,ParameterValue=${DBPassword}\
-  ParameterKey=DomainName,ParameterValue=${DomainName}
+  ParameterKey=DomainName,ParameterValue=${DomainName}\
+  ParameterKey=CertARN,ParameterValue=${CertARN}
+
 i=1
 sp="/-\|"
 while true

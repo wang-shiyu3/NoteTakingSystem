@@ -18,6 +18,8 @@ Parameters:
     Type: String
   DomainName:
     Type: String
+  CertARN:
+    Type: String
 
 Resources:
   DBSecurityGroup:
@@ -196,3 +198,49 @@ Resources:
     Type: AWS::CertificateManager::Certificate
     Properties:
       DomainName: !Ref DomainName
+  ApplicationLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      IpAddressType: ipv4
+      Name: ApplicationLoadBalancer
+      Scheme: internet-facing
+      SecurityGroups:
+        - Fn::ImportValue: !Sub '${ExportStackName}-LoadBalancerSecurityGroup'
+      Subnets:
+        - Fn::ImportValue: !Sub '${ExportStackName}-SubnetA'
+        - Fn::ImportValue: !Sub '${ExportStackName}-SubnetB'
+        - Fn::ImportValue: !Sub '${ExportStackName}-SubnetC'
+      Tags:
+      - Key: csye6225-loadbalancer
+        Value: loadbalancer
+      Type: application
+  ALBListenerService1:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+      - Type: forward
+        TargetGroupArn:
+          Ref: ALBTargetGroup
+      LoadBalancerArn:
+        Ref: ApplicationLoadBalancer
+      Port: '443'
+      Protocol: HTTPS
+      Certificates:
+      - CertificateArn:
+          Ref: CertARN
+  ALBTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 30
+      HealthCheckTimeoutSeconds: 5
+      HealthCheckPath: "/"
+      HealthyThresholdCount: 3
+      UnhealthyThresholdCount: 5
+      HealthCheckPort: '5050'
+      HealthCheckProtocol: HTTPS
+      Name: ALBTargetGroup
+      Port: 5050
+      Protocol: HTTP
+      TargetType: instance
+      VpcId: Fn::ImportValue: !Sub '${ExportStackName}-VPC'
+
