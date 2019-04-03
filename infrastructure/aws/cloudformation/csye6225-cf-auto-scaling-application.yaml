@@ -16,6 +16,8 @@ Parameters:
     Type: String
   DBUsername:
     Type: String
+  DomainName:
+    Type: String
 
 Resources:
   DBSecurityGroup:
@@ -87,7 +89,7 @@ Resources:
   #             - - DB_PASSWORD=
   #               - !Ref DBPassword
   #           - EOT
-      
+
   EC2AutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
@@ -190,3 +192,7 @@ Resources:
       Tags:
       - Key: Name
         Value: csye6225
+  SSL:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Ref DomainName
