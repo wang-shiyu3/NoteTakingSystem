@@ -55,8 +55,8 @@ jobs:
           name: Create Deployment
           command: |
             echo "Hello CodeDeploy"
-            aws deploy create-deployment\
-              --region ${AWS_REGION}\
+            aws deploy create-deployment-group\
+              --ec2-tag-filters Key=csye6225,Value=webapp\
               --auto-rollback-configuration enabled=true,events=DEPLOYMENT_FAILURE\
               --application-name csye6225-webapp\
               --deployment-config-name CodeDeployDefault.OneAtATime\
