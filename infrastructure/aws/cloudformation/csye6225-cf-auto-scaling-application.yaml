@@ -165,3 +165,21 @@ Resources:
       HostedZoneId: !Ref HostedZoneId
       Name: !Ref DomainName
       Type: A
+
+  BadReferers:
+    Type: "AWS::WAFRegional::ByteMatchSet"
+    Properties:
+      Name: "Regional Byte MatchSet"
+      ByteMatchTuples:
+        - FieldToMatch:
+            Type: "HEADER"
+            Data: "referer"
+          TargetString: "badrefer1"
+          TextTransformation: "NONE"
+          PositionalConstraint: "CONTAINS"
+        - FieldToMatch:
+            Type: "HEADER"
+            Data: "referer"
+          TargetString: "badrefer2"
+          TextTransformation: "NONE"
+          PositionalConstraint: "CONTAINS"
