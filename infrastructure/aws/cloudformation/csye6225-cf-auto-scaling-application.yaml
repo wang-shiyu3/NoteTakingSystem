@@ -33,24 +33,80 @@ Resources:
       SecurityGroupEgress:
       - IpProtocol: -1
         CidrIp: 0.0.0.0/0
-  Ec2Instance:
-    Type: AWS::EC2::Instance
+  # Ec2Instance:
+  #   Type: AWS::EC2::Instance
+  #   Properties:
+  #     ImageId: !Ref image
+  #     InstanceType: t2.micro
+  #     Volumes:
+  #       - Device: "/dev/sdh"
+  #         VolumeId: !Ref Volume
+  #     IamInstanceProfile: "EC2profile"
+  #     KeyName: csye6225
+  #     SubnetId:
+  #         Fn::ImportValue: !Sub '${ExportStackName}-SubnetB'
+  #     AvailabilityZone: us-east-1b
+  #     SecurityGroupIds:
+  #       - Fn::ImportValue: !Sub '${ExportStackName}-SecurityGroup'
+  #     Tags:
+  #       - Key: csye6225
+  #         Value: webapp
+  #     UserData:
+  #       Fn::Base64:
+  #         Fn::Join:
+  #         - "\n"
+  #         - - "#!/bin/bash"
+  #           - yum install python-dev build-essential libssl-dev libffi-dev libxml2-dev libxslt1-dev zlib1g-dev python2.7 python-pip -y
+  #           - pip install awscli
+  #           - cd /home/centos
+  #           - cat <<EOT >> env
+  #           - AWS_ACCESS_KEY=""
+  #           - AWS_SECRET_ACCESS_KEY=""
+  #           - Fn::Join:
+  #             - ""
+  #             - - AWS_BUCKET=
+  #               - !Ref S3Attachments
+  #           - Fn::Join:
+  #             - ""
+  #             - - TOPIC_NOTIFY_ARN=
+  #               - !Ref SNSARN
+  #           - WEB_PORT=80
+  #           - Fn::Join:
+  #             - ''
+  #             - - DB_HOST=
+  #               - Fn::GetAtt:
+  #                 - MyDB
+  #                 - Endpoint.Address
+  #           - DB_NAME="csye6225"
+  #           - Fn::Join:
+  #             - ""
+  #             - - DB_USERNAME=
+  #               - !Ref DBUsername
+  #           - Fn::Join:
+  #             - ""
+  #             - - DB_PASSWORD=
+  #               - !Ref DBPassword
+  #           - EOT
+      
+  EC2AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      # AutoScalingGroupName: String
+      Cooldown: 60
+      MaxSize: 10
+      MinSize: 3
+      DesiredCapacity: 3
+      LaunchConfigurationName: asg_launch_config
+  EC2ConfigurationGroup:
+    Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
       ImageId: !Ref image
       InstanceType: t2.micro
-      Volumes:
-        - Device: "/dev/sdh"
-          VolumeId: !Ref Volume
-      IamInstanceProfile: "EC2profile"
       KeyName: csye6225
-      SubnetId:
-          Fn::ImportValue: !Sub '${ExportStackName}-SubnetB'
-      AvailabilityZone: us-east-1b
-      SecurityGroupIds:
+      AssociatePublicIpAddress: True
+      LaunchConfigurationName: asg_launch_config
+      SecurityGroups:
         - Fn::ImportValue: !Sub '${ExportStackName}-SecurityGroup'
-      Tags:
-        - Key: csye6225
-          Value: webapp
       UserData:
         Fn::Base64:
           Fn::Join:
