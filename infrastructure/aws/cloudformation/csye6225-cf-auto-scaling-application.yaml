@@ -18,6 +18,8 @@ Parameters:
     Type: String
   DomainName:
     Type: String
+  HostedZoneId:
+    Type: String
 
 Resources:
   DBSecurityGroup:
@@ -154,3 +156,12 @@ Resources:
     Type: AWS::CertificateManager::Certificate
     Properties:
       DomainName: !Ref DomainName
+  myDNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      AliasTarget:
+        - HostedZoneId: !GetAtt ApplicationLoadBalancer.CanonicalHostedZoneID
+        - DNSName: !GetAtt ApplicationLoadBalancer.DNSName
+      HostedZoneId: !Ref HostedZoneId
+      Name: !Ref DomainName
+      Type: A
