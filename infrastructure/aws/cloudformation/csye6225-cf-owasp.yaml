@@ -1,0 +1,181 @@
+Parameters:
+  WebACLName:
+    Type: String
+    Default: CommonAttackProtection
+    Description: Enter the name you want to use for the WebACL. This value is also
+      added as a prefix for the names of the rules, conditions, and CloudWatch metrics
+      created by this template.
+
+## OWASP-1
+wafrSQLiSet:
+  Type: AWS::WAFRegional::SqlInjectionMatchSet
+  Condition: isRegional
+  Properties:
+    Name: !Join ['-', [!Ref WebACLName, 'detect-sqli']]
+    SqlInjectionMatchTuples:
+      - FieldToMatch:
+          Type: URI
+        TextTransformation: URL_DECODE
+      - FieldToMatch:
+          Type: URI
+        TextTransformation: HTML_ENTITY_DECODE
+      - FieldToMatch:
+          Type: QUERY_STRING
+        TextTransformation: URL_DECODE
+      - FieldToMatch:
+          Type: QUERY_STRING
+        TextTransformation: HTML_ENTITY_DECODE
+      - FieldToMatch:
+          Type: BODY
+        TextTransformation: URL_DECODE
+      - FieldToMatch:
+          Type: BODY
+        TextTransformation: HTML_ENTITY_DECODE
+      - FieldToMatch:
+          Type: HEADER
+          Data: cookie
+        TextTransformation: URL_DECODE
+      - FieldToMatch:
+          Type: HEADER
+          Data: cookie
+        TextTransformation: HTML_ENTITY_DECODE
+wafrSQLiRule:
+  Type: AWS::WAFRegional::Rule
+  Condition: isRegional
+  Properties:
+    MetricName: !Join ['', [!Ref WebACLName, 'mitigatesqli']]
+    Name: !Join ['-', [!Ref WebACLName, 'mitigate-sqli']]
+    Predicates:
+      - Type: SqlInjectionMatch
+        Negated: false
+        DataId: !Ref wafrSQLiSet
+## OWASP-2
+wafrAuthTokenStringSet:
+  Type: AWS::WAFRegional::ByteMatchSet
+  Condition: isRegional
+  Properties:
+    Name: !Join ['-', [!Ref WebACLName, 'match-auth-tokens']]
+    ByteMatchTuples:
+      - FieldToMatch:
+          Type: HEADER
+          Data: cookie
+        PositionalConstraint: CONTAINS
+        TargetString: example-session-id
+        TextTransformation: URL_DECODE
+      - FieldToMatch:
+          Type: HEADER
+          Data: authorization
+        PositionalConstraint: ENDS_WITH
+        TargetString: .TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
+        TextTransformation: URL_DECODE
+wafrAuthTokenRule:
+  Type: AWS::WAFRegional::Rule
+  Condition: isRegional
+  Properties:
+    MetricName: !Join ['', [!Ref WebACLName, 'badauthtokens']]
+    Name: !Join ['-', [!Ref WebACLName, 'detect-bad-auth-tokens']]
+    Predicates:
+      - Type: ByteMatch
+        Negated: false
+        DataId: !Ref wafrAuthTokenStringSet
+## OWASP-3
+wafrXSSSet:
+  Type: AWS::WAFRegional::XssMatchSet
+  Condition: isRegional
+  Properties:
+    Name: !Join ['-', [!Ref WebACLName, 'detect-xss']]
+    XssMatchTuples:
+      - FieldToMatch:
+          Type: URI
+        TextTransformation: URL_DECODE
+      - FieldToMatch:
+          Type: URI
+        TextTransformation: HTML_ENTITY_DECODE
+      - FieldToMatch:
+          Type: QUERY_STRING
+        TextTransformation: URL_DECODE
+      - FieldToMatch:
+          Type: QUERY_STRING
+        TextTransformation: HTML_ENTITY_DECODE
+      - FieldToMatch:
+          Type: BODY
+        TextTransformation: URL_DECODE
+      - FieldToMatch:
+          Type: BODY
+        TextTransformation: HTML_ENTITY_DECODE
+      - FieldToMatch:
+          Type: HEADER
+          Data: cookie
+        TextTransformation: URL_DECODE
+      - FieldToMatch:
+          Type: HEADER
+          Data: cookie
+        TextTransformation: HTML_ENTITY_DECODE
+wafrXSSRule:
+  Type: AWS::WAFRegional::Rule
+  Condition: isRegional
+  Properties:
+    MetricName: !Join ['', [!Ref WebACLName, 'mitigatexss']]
+    Name: !Join ['-', [!Ref WebACLName, 'mitigate-xss']]
+    Predicates:
+      - Type: XssMatch
+        Negated: false
+        DataId: !Ref wafrXSSSe
+## OWASP-4
+wafrPathsStringSet:
+  Type: AWS::WAFRegional::ByteMatchSet
+  Condition: isRegional
+  Properties:
+    Name: !Join ['-', [!Ref stackPrefix, 'match-rfi-lfi-traversal']]
+    ByteMatchTuples:
+      - FieldToMatch:
+          Type: URI
+        PositionalConstraint: CONTAINS
+        TargetString: ../
+        TextTransformation: URL_DECODE
+      - FieldToMatch:
+          Type: URI
+        PositionalConstraint: CONTAINS
+        TargetString: ../
+        TextTransformation: HTML_ENTITY_DECODE
+      - FieldToMatch:
+          Type: QUERY_STRING
+        PositionalConstraint: CONTAINS
+        TargetString: ../
+        TextTransformation: URL_DECODE
+      - FieldToMatch:
+          Type: QUERY_STRING
+        PositionalConstraint: CONTAINS
+        TargetString: ../
+        TextTransformation: HTML_ENTITY_DECODE
+      - FieldToMatch:
+          Type: URI
+        PositionalConstraint: CONTAINS
+        TargetString: ://
+        TextTransformation: URL_DECODE
+      - FieldToMatch:
+          Type: URI
+        PositionalConstraint: CONTAINS
+        TargetString: ://
+        TextTransformation: HTML_ENTITY_DECODE
+      - FieldToMatch:
+          Type: QUERY_STRING
+        PositionalConstraint: CONTAINS
+        TargetString: ://
+        TextTransformation: URL_DECODE
+      - FieldToMatch:
+          Type: QUERY_STRING
+        PositionalConstraint: CONTAINS
+        TargetString: ://
+        TextTransformation: HTML_ENTITY_DECODE
+wafrPathsRule:
+  Type: AWS::WAFRegional::Rule
+  Condition: isRegional
+  Properties:
+    MetricName: !Join ['', [!Ref stackPrefix, 'detectrfilfi']]
+    Name: !Join ['-', [!Ref stackPrefix, 'detect-rfi-lfi-traversal']]
+    Predicates:
+      - Type: ByteMatch
+        Negated: false
+        DataId: !Ref wafrPathsStringSet
+## OWASP-5
