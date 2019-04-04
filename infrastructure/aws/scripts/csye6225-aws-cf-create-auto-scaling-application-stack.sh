@@ -16,6 +16,8 @@ echo "Enter DBPassword: "
 read DBPassword
 echo "Enter DomainName: "
 read DomainName
+echo "Enter the ARN of Certificate: "
+read CertARN
 echo "Enter Hosted Zone Id: "
 read HostedZoneId
 
@@ -29,6 +31,7 @@ aws cloudformation create-stack --stack-name ${stack}\
   ParameterKey=DBUsername,ParameterValue=${DBUsername}\
   ParameterKey=DBPassword,ParameterValue=${DBPassword}\
   ParameterKey=DomainName,ParameterValue=${DomainName}\
+  ParameterKey=CertARN,ParameterValue=${CertARN}
   ParameterKey=HostedZoneId,ParameterValue=${HostedZoneId}
 
 i=1

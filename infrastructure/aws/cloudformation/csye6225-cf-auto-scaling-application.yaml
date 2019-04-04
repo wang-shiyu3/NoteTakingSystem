@@ -18,6 +18,8 @@ Parameters:
     Type: String
   DomainName:
     Type: String
+  CertARN:
+    Type: String
   HostedZoneId:
     Type: String
 
@@ -47,13 +49,13 @@ Resources:
       DesiredCapacity: 3
       HealthCheckType: EC2
       LaunchConfigurationName: asg_launch_config
-      Tags: 
-      - 
+      Tags:
+      -
         Key: Name
         Value: webserver
         PropagateAtLaunch : "true"
       TargetGroupARNs: !Ref ALBTargetGroup
-      VPCZoneIdentifier: 
+      VPCZoneIdentifier:
         - Fn::ImportValue: !Sub '${ExportStackName}-SubnetA'
         - Fn::ImportValue: !Sub '${ExportStackName}-SubnetB'
         - Fn::ImportValue: !Sub '${ExportStackName}-SubnetC'
@@ -67,7 +69,7 @@ Resources:
       LaunchConfigurationName: asg_launch_config
       BlockDeviceMappings:
         - Device: "/dev/sdh"
-          Ebs: 
+          Ebs:
             Size: 20
             VolumeType: gp2
             AvailabilityZone: us-east-1b
@@ -156,6 +158,52 @@ Resources:
     Type: AWS::CertificateManager::Certificate
     Properties:
       DomainName: !Ref DomainName
+  ApplicationLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      IpAddressType: ipv4
+      Name: ApplicationLoadBalancer
+      Scheme: internet-facing
+      SecurityGroups:
+        - Fn::ImportValue: !Sub '${ExportStackName}-LoadBalancerSecurityGroup'
+      Subnets:
+        - Fn::ImportValue: !Sub '${ExportStackName}-SubnetA'
+        - Fn::ImportValue: !Sub '${ExportStackName}-SubnetB'
+        - Fn::ImportValue: !Sub '${ExportStackName}-SubnetC'
+      Tags:
+      - Key: csye6225-loadbalancer
+        Value: loadbalancer
+      Type: application
+  ALBListenerService1:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+      - Type: forward
+        TargetGroupArn:
+          Ref: ALBTargetGroup
+      LoadBalancerArn:
+        Ref: ApplicationLoadBalancer
+      Port: '443'
+      Protocol: HTTPS
+      Certificates:
+      - CertificateArn:
+          Ref: CertARN
+  ALBTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 30
+      HealthCheckTimeoutSeconds: 5
+      HealthCheckPath: "/"
+      HealthyThresholdCount: 3
+      UnhealthyThresholdCount: 5
+      HealthCheckPort: '5050'
+      HealthCheckProtocol: HTTPS
+      Name: ALBTargetGroup
+      Port: 5050
+      Protocol: HTTP
+      TargetType: instance
+      VpcId: Fn::ImportValue: !Sub '${ExportStackName}-VPC'
+
   myDNSRecord:
     Type: AWS::Route53::RecordSet
     Properties:
@@ -166,20 +214,71 @@ Resources:
       Name: !Ref DomainName
       Type: A
 
-  BadReferers:
-    Type: "AWS::WAFRegional::ByteMatchSet"
+  WebServerScaleUpPolicy:
+    Type: AWS::AutoScaling::ScalingPolicy
     Properties:
-      Name: "Regional Byte MatchSet"
-      ByteMatchTuples:
-        - FieldToMatch:
-            Type: "HEADER"
-            Data: "referer"
-          TargetString: "badrefer1"
-          TextTransformation: "NONE"
-          PositionalConstraint: "CONTAINS"
-        - FieldToMatch:
-            Type: "HEADER"
-            Data: "referer"
-          TargetString: "badrefer2"
-          TextTransformation: "NONE"
-          PositionalConstraint: "CONTAINS"
+      AdjustmentType: ChangeInCapacity
+      AutoScalingGroupName:
+        Ref: EC2AutoScalingGroup
+      Cooldown: '60'
+      ScalingAdjustment: '1'
+  WebServerScaleDownPolicy:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties:
+      AdjustmentType: ChangeInCapacity
+      AutoScalingGroupName:
+        Ref: EC2AutoScalingGroup
+      Cooldown: '60'
+      ScalingAdjustment: "-1"
+  CPUAlarmHigh:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Scale-up if CPU > 90% for 10 minutes
+      MetricName: CPUUtilization
+      Namespace: AWS/EC2
+      Statistic: Average
+      Period: '300'
+      EvaluationPeriods: '2'
+      Threshold: '90'
+      AlarmActions:
+      - Ref: WebServerScaleUpPolicy
+      Dimensions:
+      - Name: AutoScalingGroupName
+        Value:
+          Ref: EC2AutoScalingGroup
+      ComparisonOperator: GreaterThanThreshold
+  CPUAlarmLow:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Scale-down if CPU < 70% for 10 minutes
+      MetricName: CPUUtilization
+      Namespace: AWS/EC2
+      Statistic: Average
+      Period: '300'
+      EvaluationPeriods: '2'
+      Threshold: '70'
+      AlarmActions:
+      - Ref: WebServerScaleDownPolicy
+      Dimensions:
+      - Name: AutoScalingGroupName
+        Value:
+          Ref: EC2AutoScalingGroup
+      ComparisonOperator: LessThanThreshold
+
+BadReferers:
+  Type: "AWS::WAFRegional::ByteMatchSet"
+  Properties:
+    Name: "Regional Byte MatchSet"
+    ByteMatchTuples:
+      - FieldToMatch:
+          Type: "HEADER"
+          Data: "referer"
+        TargetString: "badrefer1"
+        TextTransformation: "NONE"
+        PositionalConstraint: "CONTAINS"
+      - FieldToMatch:
+          Type: "HEADER"
+          Data: "referer"
+        TargetString: "badrefer2"
+        TextTransformation: "NONE"
+        PositionalConstraint: "CONTAINS"
