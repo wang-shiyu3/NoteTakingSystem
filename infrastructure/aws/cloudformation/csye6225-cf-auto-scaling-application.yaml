@@ -264,3 +264,11 @@ Resources:
         Value:
           Ref: EC2AutoScalingGroup
       ComparisonOperator: LessThanThreshold
+
+Outputs:
+  ApplicationLoadBalancer:
+    Description: ApplicationLoadBalancer arn
+    Value:
+      !Ref ApplicationLoadBalancer
+    Export:
+      Name: !Sub ${AWS::StackName}-ApplicationLoadBalancer
