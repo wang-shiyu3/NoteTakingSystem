@@ -20,6 +20,8 @@ echo "Enter the ARN of Certificate: "
 read CertARN
 echo "Enter Hosted Zone Id: "
 read HostedZoneId
+echo "Enter the stack name of cicd: "
+read CICDStackName
 
 
 aws cloudformation create-stack --stack-name ${stack}\
@@ -31,8 +33,10 @@ aws cloudformation create-stack --stack-name ${stack}\
   ParameterKey=DBUsername,ParameterValue=${DBUsername}\
   ParameterKey=DBPassword,ParameterValue=${DBPassword}\
   ParameterKey=DomainName,ParameterValue=${DomainName}\
-  ParameterKey=CertARN,ParameterValue=${CertARN}
-  ParameterKey=HostedZoneId,ParameterValue=${HostedZoneId}
+  ParameterKey=CertARN,ParameterValue=${CertARN}\
+  ParameterKey=HostedZoneId,ParameterValue=${HostedZoneId}\
+  ParameterKey=CICDStackName,ParameterValue=${CICDStackName}
+
 
 i=1
 sp="/-\|"
