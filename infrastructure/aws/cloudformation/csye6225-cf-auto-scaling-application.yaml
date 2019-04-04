@@ -240,6 +240,7 @@ Resources:
       HostedZoneId: !Ref HostedZoneId
       Name: !Ref DomainName
       Type: A
+
   WebServerScaleUpPolicy:
     Type: AWS::AutoScaling::ScalingPolicy
     Properties:
@@ -290,3 +291,11 @@ Resources:
         Value:
           Ref: EC2AutoScalingGroup
       ComparisonOperator: LessThanThreshold
+
+Outputs:
+  ApplicationLoadBalancer:
+    Description: ApplicationLoadBalancer arn
+    Value:
+      !Ref ApplicationLoadBalancer
+    Export:
+      Name: !Sub ${AWS::StackName}-ApplicationLoadBalancer
