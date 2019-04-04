@@ -17,7 +17,7 @@
 ## none
 
 AWSTemplateFormatVersion: '2010-09-09'
-Description: AWS WAF Basic OWASP Example Rule Set
+Description: WAF Stack
 
 ## ::PARAMETERS::
 ## Template parameters to be configured by user
