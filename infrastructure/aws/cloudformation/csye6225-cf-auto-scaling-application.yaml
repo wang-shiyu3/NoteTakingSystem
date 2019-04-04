@@ -213,6 +213,7 @@ Resources:
       HostedZoneId: !Ref HostedZoneId
       Name: !Ref DomainName
       Type: A
+
   WebServerScaleUpPolicy:
     Type: AWS::AutoScaling::ScalingPolicy
     Properties:
