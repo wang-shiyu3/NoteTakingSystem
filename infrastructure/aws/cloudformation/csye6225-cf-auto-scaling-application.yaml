@@ -69,6 +69,7 @@ Resources:
             - cat <<EOT >> env
             - AWS_ACCESS_KEY=""
             - AWS_SECRET_ACCESS_KEY=""
+            - PROFILE="prod"
             - Fn::Join:
               - ""
               - - AWS_BUCKET=
@@ -265,7 +266,7 @@ Resources:
       Statistic: Average
       Period: 60
       EvaluationPeriods: '2'
-      Threshold: '6'
+      Threshold: '15'
       AlarmActions:
       - Ref: WebServerScaleUpPolicy
       Dimensions:

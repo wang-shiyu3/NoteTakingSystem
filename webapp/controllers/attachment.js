@@ -5,6 +5,7 @@ const logger = require("./../services/log");
 
 const Attachment = require("./../model/attachment");
 const s3 = require("../services/s3");
+const {PROFILE} = require("../configs/config");
 
 const router = new Router();
 
@@ -25,7 +26,7 @@ router.post("/", upload.single("doc"), async ctx => {
     req: { file },
     params: { nid }
   } = ctx;
-  const url = await s3.upload(file);
+  let url = PROFILE!="dev" ? await s3.upload(file):"../uploads/"+file.filename;
   const attachment = await Attachment.create({ url, nid });
   ctx.body = attachment ? attachment.toJSON() : {};
 });
@@ -35,9 +36,13 @@ router.put("/:id", upload.single("doc"), async ctx => {
     req: { file },
     params: { id }
   } = ctx;
-  const url = await s3.upload(file);
+  let url = PROFILE!="dev" ? await s3.upload(file):"../uploads/"+file.filename;
   let attachment = await Attachment.findOne({ where: { id } });
-  await s3.remove(attachment.url.split("/").pop());
+
+  if(PROFILE!="dev"){
+    await s3.remove(attachment.url.split("/").pop());
+  }
+
   attachment = await Attachment.update({ url }, { where: { id } });
   ctx.body = { row_affected: attachment };
 });
@@ -47,7 +52,9 @@ router.delete("/:id", async ctx => {
     params: { id }
   } = ctx;
   const attachment = await Attachment.findOne({ where: { id } });
-  await s3.remove(attachment.url.split("/").pop());
+  if(PROFILE!="dev"){
+    await s3.remove(attachment.url.split("/").pop());
+  }
   const deleted = await attachment.destroy();
   ctx.body = { row_affected: deleted ? 1 : 0 };
 });
