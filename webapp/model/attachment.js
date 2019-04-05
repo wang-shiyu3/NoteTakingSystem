@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const sequelize = require("./../services/db-connect");
+const s3 = require("./../services/s3");
 const Attachment = sequelize.define(
   "attachment",
   {
@@ -17,7 +18,7 @@ const Attachment = sequelize.define(
         await s3.remove(attachment.url.split("/").pop());
         fn(null, attachment);
       },
-      beforeUpdate: (attachment, options, fn)=>{
+      beforeUpdate: async (attachment, options, fn)=>{
         await s3.remove(attachment.url.split("/").pop());
         fn(null, attachment);
       }
@@ -26,5 +27,4 @@ const Attachment = sequelize.define(
 );
 
 Attachment.sync();
-
 module.exports = Attachment;
