@@ -4,8 +4,10 @@
 # read stack
 # echo "Enter your auto scaling application name [ENTER]: "
 # read ExportStackName
-stack='waf'
-ExportStackName='ec2'
+echo "Enter your stack name [ENTER]: "
+read stack
+echo "Enter your application stack name [ENTER]: "
+read ExportStackName
 
 aws cloudformation create-stack --stack-name ${stack}\
   --template-body file://../cloudformation/csye6225-cf-waf.yaml\
