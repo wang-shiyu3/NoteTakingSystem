@@ -8,10 +8,13 @@ echo "Enter your stack name [ENTER]: "
 read stack
 echo "Enter your application stack name [ENTER]: "
 read ExportStackName
+echo "Enter the IP address you want to put into blacklist [ENTER]: "
+read IPV4
 
 aws cloudformation create-stack --stack-name ${stack}\
   --template-body file://../cloudformation/csye6225-cf-waf.yaml\
   --parameters ParameterKey=ExportStackName,ParameterValue=${ExportStackName}\
+               ParameterKey=IPV4,ParameterValue=${IPV4}\
 
 
 

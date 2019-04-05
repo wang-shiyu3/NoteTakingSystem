@@ -24,7 +24,9 @@ Description: WAF Stack
 Parameters:
   ExportStackName:
     Type: String
-    Default: ec2
+  IPV4:
+    Type: String
+    Description: IP address you want to put into blacklist
   stackPrefix:
     Type: String
     Description: The prefix to use when naming resources in this stack. Normally we would use the stack name, but since this template can be used as a resource in other stacks we want to keep the naming consistent. No symbols allowed.
@@ -1031,6 +1033,8 @@ Resources:
           Value: 172.16.0.0/16
         - Type: IPV4
           Value: 127.0.0.1/32
+        - Type: IPV4
+          Value: !Join ['', [!Ref IPV4, '/24']]
   wafgBlacklistIpSet:
     Type: AWS::WAF::IPSet
     Condition: isGlobal
@@ -1047,6 +1051,8 @@ Resources:
           Value: 172.16.0.0/16
         - Type: IPV4
           Value: 127.0.0.1/32
+        - Type: IPV4
+          Value: !Join ['', [!Ref IPV4, '/24']]
   wafrBlacklistIpRule:
     Type: AWS::WAFRegional::Rule
     Condition: isRegional
