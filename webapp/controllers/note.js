@@ -66,10 +66,10 @@ router.delete("/:id", async ctx => {
     params: { id }
   } = ctx;
 
-  // const attachments = await Attachment.findAll({ where: { nid: id } });
-  // for (let attachment of attachments) {
-  //   await s3.remove(attachment.url.split("/").pop());
-  // }
+  const attachments = await Attachment.findAll({ where: { nid: id } });
+  for (let attachment of attachments) {
+    await s3.remove(attachment.url.split("/").pop());
+  }
   const note = await Note.destroy({ where: { id, uid } });
   const attachment = await Attachment.destroy({ where: { nid: id } });
   ctx.body = { row_affected: { note, attachment } };
