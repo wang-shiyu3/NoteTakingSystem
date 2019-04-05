@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("./../services/db-connect");
 const s3 = require("./../services/s3");
+const Note = require("./note");
 const Attachment = sequelize.define(
   "attachment",
   {
@@ -14,13 +15,13 @@ const Attachment = sequelize.define(
   },
   {
     hooks: {
-      beforeDestroy: async (attachment, options, fn) => {
+      beforeDestroy: async (attachment, options) => {
+        console.log(attachment)
         await s3.remove(attachment.url.split("/").pop());
-        fn(null, attachment);
+
       },
       beforeUpdate: async (attachment, options, fn)=>{
         await s3.remove(attachment.url.split("/").pop());
-        fn(null, attachment);
       }
     }
   }
