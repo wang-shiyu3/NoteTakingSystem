@@ -50,11 +50,10 @@ Resources:
       AssociatePublicIpAddress: "true"
       LaunchConfigurationName: asg_launch_config
       BlockDeviceMappings:
-        - Device: "/dev/sdh"
+        - DeviceName: "/dev/sdh"
           Ebs:
-            Size: 20
+            VolumeSize: 20
             VolumeType: gp2
-            AvailabilityZone: us-east-1b
             DeleteOnTermination: "true"
       SecurityGroups:
         - Fn::ImportValue: !Sub '${ExportStackName}-SecurityGroup'
@@ -108,8 +107,8 @@ Resources:
         !Ref AsgLaunchConfig
       Tags:
       -
-        Key: Name
-        Value: webserver
+        Key: csye6225
+        Value: webapp
         PropagateAtLaunch : "true"
       TargetGroupARNs:
         - !Ref ALBTargetGroup
@@ -156,12 +155,8 @@ Resources:
             WriteCapacityUnits: "5"
       TableName: csye6225
       Tags:
-      - Key: Name
-        Value: csye6225
-  SSL:
-    Type: AWS::CertificateManager::Certificate
-    Properties:
-      DomainName: !Ref DomainName
+      - Key: csye6225
+        Value: webapp
 
   CodeDeployApplication:
     Type: AWS::CodeDeploy::Application
@@ -223,13 +218,13 @@ Resources:
     Properties:
       HealthCheckIntervalSeconds: 30
       HealthCheckTimeoutSeconds: 5
-      HealthCheckPath: "/"
+      HealthCheckPath: "/health"
       HealthyThresholdCount: 3
       UnhealthyThresholdCount: 5
-      HealthCheckPort: '5050'
+      HealthCheckPort: 80
       HealthCheckProtocol: HTTPS
       Name: ALBTargetGroup
-      Port: 5050
+      Port: 80
       Protocol: HTTP
       TargetType: instance
       VpcId:

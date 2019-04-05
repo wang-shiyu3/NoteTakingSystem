@@ -12,7 +12,6 @@ const noteService = require("./../services/note");
 
 const reset = require("./../services/reset");
 
-
 router.use(async (ctx, next) => {
   const start = Date.now();
   statsd.increment(`${ctx.method} ${ctx.url}`);
@@ -27,6 +26,11 @@ router.use(async (ctx, next) => {
       message: err.message
     };
   }
+});
+
+router.get("/health", ctx => {
+  ctx.status = 200;
+  ctx.body = { message: "healthy" };
 });
 
 router.post("/reset", reset);
