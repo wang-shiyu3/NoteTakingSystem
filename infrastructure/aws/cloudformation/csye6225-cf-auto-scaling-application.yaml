@@ -239,8 +239,8 @@ Resources:
     Type: AWS::Route53::RecordSet
     Properties:
       AliasTarget:
-        - HostedZoneId: !GetAtt ApplicationLoadBalancer.CanonicalHostedZoneID
-        - DNSName: !GetAtt ApplicationLoadBalancer.DNSName
+        DNSName: !GetAtt ApplicationLoadBalancer.DNSName
+        HostedZoneId: !GetAtt ApplicationLoadBalancer.CanonicalHostedZoneID
       HostedZoneId: !Ref HostedZoneId
       Name: !Ref DomainName
       Type: A
