@@ -41,27 +41,7 @@ Resources:
       SecurityGroupEgress:
       - IpProtocol: -1
         CidrIp: 0.0.0.0/0
-  EC2AutoScalingGroup:
-    Type: AWS::AutoScaling::AutoScalingGroup
-    Properties:
-      AutoScalingGroupName: WebServerAutoScalingGroup
-      Cooldown: 60
-      MaxSize: 10
-      MinSize: 3
-      DesiredCapacity: 3
-      HealthCheckType: EC2
-      LaunchConfigurationName: asg_launch_config
-      Tags:
-      -
-        Key: Name
-        Value: webserver
-        PropagateAtLaunch : "true"
-      TargetGroupARNs: !Ref ALBTargetGroup
-      VPCZoneIdentifier:
-        - Fn::ImportValue: !Sub '${ExportStackName}-SubnetA'
-        - Fn::ImportValue: !Sub '${ExportStackName}-SubnetB'
-        - Fn::ImportValue: !Sub '${ExportStackName}-SubnetC'
-  asg_launch_config:
+  AsgLaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
       ImageId: !Ref image
@@ -115,6 +95,28 @@ Resources:
               - - DB_PASSWORD=
                 - !Ref DBPassword
             - EOT
+  EC2AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AutoScalingGroupName: WebServerAutoScalingGroup
+      Cooldown: 60
+      MaxSize: 10
+      MinSize: 3
+      DesiredCapacity: 3
+      HealthCheckType: EC2
+      LaunchConfigurationName:
+        !Ref AsgLaunchConfig
+      Tags:
+      -
+        Key: Name
+        Value: webserver
+        PropagateAtLaunch : "true"
+      TargetGroupARNs:
+        - !Ref ALBTargetGroup
+      VPCZoneIdentifier:
+        - Fn::ImportValue: !Sub '${ExportStackName}-SubnetA'
+        - Fn::ImportValue: !Sub '${ExportStackName}-SubnetB'
+        - Fn::ImportValue: !Sub '${ExportStackName}-SubnetC'
   MyDB:
     Type: AWS::RDS::DBInstance
     Properties:
@@ -183,7 +185,8 @@ Resources:
         - Key: csye6225
           Value: webapp
           Type: KEY_AND_VALUE
-      ServiceRoleArn: Fn::ImportValue: !Sub '${CICDStackName}-CodeDeployServiceRole'
+      ServiceRoleArn:
+        Fn::ImportValue: !Sub '${CICDStackName}-CodeDeployServiceRole'
 
   ApplicationLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -207,14 +210,14 @@ Resources:
       DefaultActions:
       - Type: forward
         TargetGroupArn:
-          Ref: ALBTargetGroup
+          !Ref ALBTargetGroup
       LoadBalancerArn:
-        Ref: ApplicationLoadBalancer
+        !Ref ApplicationLoadBalancer
       Port: '443'
       Protocol: HTTPS
       Certificates:
       - CertificateArn:
-          Ref: CertARN
+          !Ref CertARN
   ALBTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
@@ -229,7 +232,8 @@ Resources:
       Port: 5050
       Protocol: HTTP
       TargetType: instance
-      VpcId: Fn::ImportValue: !Sub '${ExportStackName}-VPC'
+      VpcId:
+        Fn::ImportValue: !Sub '${ExportStackName}-VPC'
 
   myDNSRecord:
     Type: AWS::Route53::RecordSet
@@ -246,7 +250,7 @@ Resources:
     Properties:
       AdjustmentType: ChangeInCapacity
       AutoScalingGroupName:
-        Ref: EC2AutoScalingGroup
+        !Ref EC2AutoScalingGroup
       Cooldown: '60'
       ScalingAdjustment: '1'
   WebServerScaleDownPolicy:
@@ -254,7 +258,7 @@ Resources:
     Properties:
       AdjustmentType: ChangeInCapacity
       AutoScalingGroupName:
-        Ref: EC2AutoScalingGroup
+        !Ref EC2AutoScalingGroup
       Cooldown: '60'
       ScalingAdjustment: "-1"
   CPUAlarmHigh:

@@ -87,7 +87,7 @@ Resources:
   LoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupName: "Internet Group"
+      GroupName: "csye6225-loadbalancer"
       GroupDescription: "Traffic in, all traffic out."
       VpcId: !Ref VPC
       SecurityGroupIngress:
@@ -119,7 +119,7 @@ Resources:
   SecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupName: "Internet Group"
+      GroupName: "csye6225-webserver"
       GroupDescription: "SSH traffic in, all traffic out."
       VpcId: !Ref VPC
       SecurityGroupIngress:

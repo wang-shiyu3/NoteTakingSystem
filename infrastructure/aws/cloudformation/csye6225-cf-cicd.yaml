@@ -217,10 +217,10 @@ Resources:
       LogGroupName: "csye6225_spring2019"
       LogStreamName: "webapp"
 
-  Outputs:
+Outputs:
   VPC:
     Description: CodeDeployServiceRole ARN
     Value:
-      !GetAtt CodeDeployServiceRole.ARN
+      !GetAtt CodeDeployServiceRole.Arn
     Export:
       Name: !Sub ${AWS::StackName}-CodeDeployServiceRole
