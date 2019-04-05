@@ -22,6 +22,9 @@ Description: WAF Stack
 ## ::PARAMETERS::
 ## Template parameters to be configured by user
 Parameters:
+  ExportStackName:
+    Type: String
+    Default: ec2
   stackPrefix:
     Type: String
     Description: The prefix to use when naming resources in this stack. Normally we would use the stack name, but since this template can be used as a resource in other stacks we want to keep the naming consistent. No symbols allowed.
@@ -1169,7 +1172,7 @@ Resources:
     Type: AWS::WAFRegional::WebACLAssociation
     Properties:
       ResourceArn:
-        - Fn::ImportValue: !Sub '${ExportStackName}-ApplicationLoadBalancer'
+        Fn::ImportValue: !Sub '${ExportStackName}-ApplicationLoadBalancer'
       WebACLId:
         Ref: wafrOwaspACL
 
