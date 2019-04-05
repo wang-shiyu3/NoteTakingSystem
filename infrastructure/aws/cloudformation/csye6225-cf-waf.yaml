@@ -27,6 +27,7 @@ Parameters:
   IPV4:
     Type: String
     Description: IP address you want to put into blacklist
+    Default: 127.0.0.1
   stackPrefix:
     Type: String
     Description: The prefix to use when naming resources in this stack. Normally we would use the stack name, but since this template can be used as a resource in other stacks we want to keep the naming consistent. No symbols allowed.
